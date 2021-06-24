@@ -43,3 +43,8 @@
   }
 }
 </script>
+
+<script>
+  var width = $(window).width();
+  if (width <= 480) {$(".text-block-left").parent().css({"display":"flex","flex-flow":"column-reverse"});}
+</script>

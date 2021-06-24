@@ -39,4 +39,4 @@
 
       <script type="text/javascript" src="//www.adcell.de/js/inlineretarget.js?method=basket&pid=undefined&productIds={{cart_items_ids_string}}&productSeparator=;&quantities={{cart_items_quantities_string}}&basketProductCount={{cart.item_count}}&basketTotal={{cart.total_price | divided_by: tax_times | money_without_currency}}" async="async"></script>
     {% comment %}DONT REMOVE THIS | END ADCELL APP{% endcomment %}
-    
+    {% include 'upsellio_embed' %}

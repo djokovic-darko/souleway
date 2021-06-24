@@ -303,7 +303,7 @@
            </div>
          </div>
          <div class="featured-link--half">
-           <div class="info text-align--{{section.settings.frontpage_text_align}}">
+           <div id="center-button-mobile" class="info text-align--{{section.settings.frontpage_text_align}}">
              <a {% if section.settings.link != blank %}href="{{ section.settings.link }}"{% endif %} class="collection_title">
                {{ section.settings.title }}
              </a>
@@ -331,6 +331,14 @@
     }
   </style>
 {% endif %}
+  
+<style>
+ @media only screen and (max-width: 480px) {
+    #center-button-mobile {
+          text-align: center !important;
+    }
+  }
+</style>
 
 {% schema %}
 

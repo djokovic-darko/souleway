@@ -2980,6 +2980,7 @@ ul.tabs li a.active{
          
           @media (max-width:768px) {
            width:100%;
+           margin-top: 18px;
         }
        }
       p{
@@ -3030,6 +3031,7 @@ ul.tabs li a.active{
          
           @media (max-width:768px) {
            width:100%;
+           margin-top: 18px;
         }
        }
       p{
@@ -3765,10 +3767,24 @@ ul.tabs li a.active{
         margin-top: 5px;
      	border-bottom: 1px solid white;
         width: fit-content;
+        @media (min-width: 789px) {
+          display: none;
+        }
+        @media (max-width:480px){
+          font-size: 12px;
+          display: block;
+        }
       }
     }
   }
-  
+
+  .collection-thumbnail-overlay:hover {
+    .title--subheading {
+        @media (min-width: 789px) {
+          display: block;
+        }
+    }
+  }
   .page_section_header{
     margin-bottom:20px;
   }
@@ -4217,4 +4233,91 @@ ul.tabs li a.active{
     font-size: 20pt;
     cursor: pointer;
   }
+}
+
+
+//Collection tempplate product variants
+
+.collection-template-section.product-variants{
+ .custom-product-list.product-list{
+  .thumbnail-overlay{
+
+      .info{
+        pointer-events: auto;
+      }
+    
+    @media (max-width: 768px){
+    	position: relative;
+      
+       .info{
+         position: relative;
+       }
+    }
+
+ 	.product-details-wrapper{
+      
+      @media (min-width: 769px){
+        display: flex;
+        flex-direction: row;
+        display: -webkit-box;
+        display: -moz-box;
+        display: -ms-flexbox;
+        display: -webkit-flex;
+        display: flex;
+        -webkit-flex-direction: row;
+        -moz-flex-direction: row;
+        -ms-flex-direction: row;
+        flex-direction: row;
+        flex-wrap:wrap;
+      }
+
+
+      .description-block{
+        
+         @media (min-width: 769px){
+       		 width: 50%;
+         }
+
+          .title{
+            font-size: 14px;
+            line-height: 18px;
+          }
+
+          .price{
+             span.money{
+                font-size: 12px;
+             }
+          }
+      }
+
+      .swatch-block{        
+        @media (min-width: 769px){
+        	width: 50%;
+        }
+      }
+
+      .collection_swatches {
+        @media (min-width: 769px){
+         text-align: right;
+         margin: 15px 0px 0px 0px;
+        }
+        
+        @media (max-width: 768px){
+         text-align: left;
+         margin: 0px;
+        }
+        
+          .swatch{
+            padding: 0px;
+             span{ 
+              width: 12px;
+              min-width: 12px;
+              height: 12px;
+              border: none;
+             }
+          }
+        }
+    }
+  }
+}
 }
