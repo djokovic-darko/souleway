@@ -1,13 +1,13 @@
 development:
   password: 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
-  theme_id: "121432047794"
+  theme_id: "123550597298"
   store: soule-way.myshopify.com
   ignores:
     - themekit_ignores
 
 production:
   password: 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
-  theme_id: "122394837170"
+  theme_id: "123150631090"
   store: soule-way.myshopify.com
   ignores:
     - themekit_ignores
