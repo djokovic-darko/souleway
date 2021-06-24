@@ -40,6 +40,7 @@
     {% assign alt_text = product.featured_image.alt %}
   {% endif %}
 
+  {% assign variant = product.selected_or_first_available_variant %}
   {% capture product_url = %}{{ product.url | within: collection }}{% endcapture %}
   {% capture variant_url = %}{{ variant.url | within: collection }}{% endcapture %}
 
@@ -73,14 +74,58 @@
              <div class="product-details-wrapper">
               	<div class="description-block">
                  {% if settings.thumbnail_hover_enabled %}
-                 {% include "collection-product-info" %}
+                 
+                   <div class="product-details">
+                    <span class="title" itemprop="name">{{ product.title }}</span>
+                    {% if settings.display_vendor %}
+                      <span class="brand">{{ product.vendor }}</span>
+                    {% endif %}
+                    {% if settings.enable_shopify_collection_badges %}
+                      <div class="shopify-reviews reviewsVisibility--{{settings.enable_shopify_review_comments}}">
+                        <span class="shopify-product-reviews-badge" data-id="{{ product.id }}"></span>
+                      </div>
+                    {% endif %}
+                    {% if collection_handles contains 'coming-soon' %}
+                      <span class="coming-soon">{{ 'collections.general.coming_soon' | t }}</span>
+                    {% else %}
+                     <div class="bottom-description">
+                      <span class="price {% if product.compare_at_price_max > product.price %}sale{% endif %}">
+                        {% unless variant.available == false and settings.display_price == false %}
+                          <span class="current_price">
+
+                            {% if variant.price > 0 %}
+                              <span class="money">{{ variant.price | money }}</span>
+                            {% else %}
+                              {{ settings.free_price_text }}
+                            {% endif %}
+                          </span>
+                          {% assign variant = product.selected_or_first_available_variant %}
+                          <span class="was_price">
+                            {% if variant.price < variant.compare_at_price %}
+                              <span class="money">{{ variant.compare_at_price | money }}</span>
+                            {% endif %}
+                          </span>
+                        {% endunless %}
+                        <div class="sold-out">
+                          {% unless variant.available %}
+                            {{ settings.sold_out_text }}
+                          {% endunless %}
+                        </div>
+                      </span>
+                     
+                       <div class="swatch-block">
+                         {% include 'collection-swatch' %}
+                       </div>
+                     </div>
+                     
+                    {% endif %}
+                  </div>
+
+                  
                  {% endif %}
                  {% if settings.quick_shop_enabled and settings.quick_shop_style == 'popup' %}
                  {% include 'quick-shop-button' %}
                  {% endif %}
-               </div>
-               <div class="swatch-block">
-                 {% include 'collection-swatch' %}
                </div>
              </div>            
           </div>

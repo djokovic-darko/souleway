@@ -163,7 +163,7 @@
     "display_vendor": false,
     "collection_secondary_image": true,
     "sale_banner_enabled": false,
-    "collection_swatches": false,
+    "collection_swatches": true,
     "mobile_products_per_row": "2",
     "pagination_type": "infinite_scroll",
     "align_height": false,
@@ -10958,6 +10958,20 @@
               "css_class": ""
             }
           },
+          "1c435477-c107-4985-add9-9f3284ae3d80": {
+            "type": "image_with_text",
+            "settings": {
+              "two_wide_display": true,
+              "frontpage_text_align": "left",
+              "frontpage_image_position": "left",
+              "image": "shopify:\/\/shop_images\/210526_simple_Kochbuch00348.jpg",
+              "image_crop": "none",
+              "title": "Launch Special: Simple Backpack. Simple Kochbuch.",
+              "text": "<p>We like simple things. Auch auf unseren Tellern. Das &quot;Simple&quot; Kochbuch von Yotam Ottolenghi passt also hervorragend zu unserem Simple Backpack. So gut, dass die ersten 15 Bestellungen unseres Simple Backpacks L eines der begehrten Kochbücher kostenfrei dazu bekommen. Denn unser stilvoller Rucksack eignet sich optimal zum Einkaufen, während Ottolenghis &quot;Simple&quot; Kochbuch dabei hilft, maximalen Geschmack bei minimalem Aufwand auf den Teller zu bringen.<\/p>",
+              "button_label": "",
+              "css_class": ""
+            }
+          },
           "a4e80f34-6d45-44a4-8fa2-935b34858242": {
             "type": "image_side_by_side",
             "settings": {
@@ -11050,6 +11064,7 @@
           "f1f36e60-eb0b-4bda-a70d-6c7d761afd47",
           "80bae8d2-679d-40bd-a42e-8afadb3bb34b",
           "ce65f04b-3a7f-46dd-9fac-79ec4a4f1387",
+          "1c435477-c107-4985-add9-9f3284ae3d80",
           "a4e80f34-6d45-44a4-8fa2-935b34858242",
           "268eba14-4481-444a-9849-9bc23dc084d4",
           "cdee6ca7-cd8d-4844-beaf-b05cf812cbd7",

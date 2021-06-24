@@ -90,7 +90,7 @@
       <div class="twelve columns offset-by-two medium-down--one-whole equal-columns--outside-trim">
         
         {% if collection.products.size > 0 %}
-         	 {% include 'product-loop-general',mobile_grid: mobile_gridValue,variantLimit: variantLimit, productLimit: productLimit %}
+         	 {% include 'best-seller-product-loop',mobile_grid: mobile_gridValue,variantLimit: variantLimit, productLimit: productLimit %}
         {%else%}
         	 <div class="section clearfix collection-matrix">
                 <p class="quote">{{ 'collections.general.no_matches' | t }}</p>
