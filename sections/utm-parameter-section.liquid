@@ -81,9 +81,11 @@
   </script>
 {%endif%}
 
+
 {% if section.settings.enable_utm == true  %}
+
 <script>
-  console.log("Raju Bhaiye Codee kaha yaha hai");
+
   $(document).ready(function () {
       let pageurlParam = "{{section.settings.url-parameter}}";
       function getQueryParams(qs) {
@@ -117,7 +119,7 @@
       }
       // coming from the URL
       var locationQuery = getQueryParams(document.location.search);
-      var url_src_val = locationQuery.utm_source;
+      var url_src_val = locationQuery.special;
       var url_campaign_val = locationQuery.utm_campaign;
       if(url_src_val) {
           // set cookie
@@ -129,16 +131,17 @@
       if(url_campaign_val) {
           // set cookie
           setCookie('url_campaign_val', url_campaign_val, 7);
-          url_campaign_val = getCookie('url_campaign_val');
+          
       } else {
           // get the value from cookie
+          url_campaign_val = getCookie('url_campaign_val');
       }
       // saved by the client
       var schemaQuery = getQueryParams(pageurlParam);
-      var schemaUrlSrc_val = schemaQuery.utm_source;
-      var schemaUrlCampaign_val = schemaQuery.utm_campaign,;
-      console.log({url_src_val,schemaUrlSrc_val,url_campaign_val,schemaUrlCampaign_val});
-      if ((url_src_val === schemaUrlSrc_val) && (url_campaign_val == schemaUrlCampaign_val)) {
+      var schemaUrlSrc_val = schemaQuery.special;
+      var schemaUrlCampaign_val = schemaQuery.utm_campaign;
+      console.log({pageurlParam,url_src_val,schemaUrlSrc_val,url_campaign_val,schemaUrlCampaign_val});
+      if (url_src_val === schemaUrlSrc_val) {
           
           $('.js-utm-parameter-section').removeClass('hide');
           $('.shopify-section #pagecontent').css('padding', '0px');

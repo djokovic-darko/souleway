@@ -7,7 +7,7 @@
       {% assign option_index = forloop.index0 %}
       {% assign values = '' %}
       <div class="collection_swatches">
-
+		{% assign count = 0 %}
         {% for variant in product.variants %}
           {% assign value = variant.options[option_index] %}
           {% unless values contains value %}
@@ -15,7 +15,7 @@
             {% assign values = values | append: ',' | append: value %}
             {% assign values = values | split: ',' %}
 
-            <a href="{{ variant.url | within: collection }}" class="swatch" data-swatch-name="meta-{{ downcased_option }}_{{ value | replace: ' ', '_' | downcase }}">
+            <a href="{{ variant.url | within: collection }}" class="swatch {% if count >= 4 %} desktop-only {% endif %}" data-swatch-name="meta-{{ downcased_option }}_{{ value | replace: ' ', '_' | downcase }}">
               <span {% if section.settings.products_per_row == 2 %}
                       data-image="{{ variant.featured_image | product_img_url: '600x' }}"
                     {% elsif section.settings.products_per_row == 3 %}
@@ -26,6 +26,10 @@
                     style="background-image: url({{ value | handle | append: '.' | append: file_extension | asset_img_url: '50x' | prepend: 'https:' }}); background-color: {{ value | split: ' ' | last | handle }};">
                 </span>
             </a>
+        	{% assign count = count | plus: 1 %}
+        	{% if count == 5 %}
+              <span class="swatch-text mobile-only"> +4 </span>
+        	{% endif %}
           {% endunless %}
         {% endfor %}
 
