@@ -1,0 +1,89 @@
+{% include 'video-with-text', type: 'section' %} 
+
+
+{% schema %}
+  {
+    "name": "Video|Text",
+	"class": "index-video-with-text-section",
+    "settings": [
+		{
+          "type": "checkbox",
+          "id": "wide_display",
+          "label": "Wide display",
+          "default": true
+        },
+         {
+          "type": "range",
+          "id": "content_margin_top",
+          "label": "Section Margin Top",
+          "min": 0,
+          "max": 100,
+          "default": 50,
+          "unit": "px"
+         },
+        {
+          "type": "range",
+          "id": "content_margin_bottom",
+          "label": "Section Margin Bottom",
+          "min": 0,
+          "max": 100,
+          "default": 50,
+          "unit": "px"
+        },
+        {
+          "type": "checkbox",
+          "id": "autoplay",
+          "label": "Autoplay video",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "autoloop",
+          "label": "Autoloop video",
+          "default": true
+        },
+        {
+          "type": "checkbox",
+          "id": "controls",
+          "label": "Controls",
+          "default": false
+        },
+        {
+          "type": "text",
+          "id": "video_mp4",
+          "label": "HTML5 MP4 File URL",
+          "info" : "Please upload mp4 video link"
+        },
+        {
+          "type": "header",
+          "content": "Content"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Heading"
+        },
+        {
+          "type": "richtext",
+          "id": "subtitle",
+          "label": "Subheading"
+        },
+        {
+          "type": "text",
+          "id": "button1_label",
+          "label": "First button label"
+        },
+        {
+          "type": "url",
+          "id": "button1_link",
+          "label": "First link"
+        }
+	],
+ 	"presets": [
+      {
+        "name": "Video|Text",
+        "category": "Video"
+      }
+    ]
+  }
+{% endschema %}

@@ -1,0 +1,224 @@
+  {% if section.settings.show_product_recommendations %}
+
+  <div class="product-recommendations-container">
+
+    {% comment %} Check whether product has any tags for custom related products {% endcomment %}
+    {% for tag in product.tags %}
+      {% if tag contains 'meta-related-collection-' %}
+        {% assign related_collection_handle = tag | remove: 'meta-related-collection-' %}
+      {% endif %}
+    {% endfor %}
+    {% comment %} Max amount of products visible {% endcomment %}
+    {% assign limit = section.settings.recommended_products_limit %}
+    {% comment %} Amount of product per row {% endcomment %}
+    {% assign products_per_row = section.settings.products_per_row %}
+    {% assign skip_product = product %}
+
+    {% if related_collection_handle != blank %}
+      {% comment %} Show products based on merchant-added tags prepended with 'meta-related-collection-' {% endcomment %}
+      {% assign collection_size = collections[related_collection_handle].all_products_count %}
+
+      {% if collection_size > 0 %}
+        {% assign custom_collection = collections[related_collection_handle] %}
+        {% assign products = custom_collection.products %}
+      {% endif %}
+
+      {% if custom_collection and collection_size > 0 %}
+        {% assign show_custom_collection = true %}
+      {% endif %}
+
+    {% else %}
+      {% comment %} Shopify generated dynamic recommendations, falling back to default related products (based on parent collection) {% endcomment %}
+      {% assign dynamic_collection = recommendations %}
+      {% assign products = recommendations.products %}
+      {% assign show_dynamic_collection = true %}
+    {% endif %}
+
+    {% comment %} HTML markup {% endcomment %}
+    {% capture product_collections_markup %}
+    
+    {% if products.size > 0 %}
+    <div class="container">
+      <div class="recommended-products__title section--header--wrapper {% unless section.settings.product_recommendations_style == 'slider' %}sixteen columns{% endunless %}" data-recommended-product-count="{% if show_dynamic_collection == true %}{{ recommendations.products_count }}{% else %}{{ collection_size }}{% endif %}">
+        <div class="page_section_header one-half medium-down--one-half small-down--one-half columns">
+          <p class="preHeading">{{section.settings.product_recommendations_preheading}}</p>
+          <p class="title">{{ section.settings.product_recommendations_heading }}</p>
+        </div>
+        
+        
+        {% assign recommended_handle_metafield = product.metafields.recommended_col.handle %}
+        {% assign recommended_handled = collections[recommended_handle_metafield].url %}
+
+        
+        {% if recommended_handle_metafield != blank %}
+           <div class="view_all_btn one-half medium-down--one-half  small-down--one-half columns text-right">
+            <a class="action_button" href="{{recommended_handled}}">Alle anzeigen</a>
+          </div>
+        {%else%}
+           <div class="view_all_btn one-half medium-down--one-half  small-down--one-half columns text-right">
+            <a class="action_button" href="{{section.settings.view_all_link}}">Alle anzeigen</a>
+           </div>
+        {%endif%}
+        
+       </div>
+    </div>
+    {%endif%}
+    
+      <div class="clear"></div>
+
+      {% if section.settings.product_recommendations_style == 'slider' %}
+        {% comment %} Recommended Products Slider {% endcomment %}
+        <div class="recommended-products--slider js-recommended-products-slider">
+          {% include 'product-slider', limit:limit, per_slide:products_per_row %}
+        </div>
+      {% else %}
+        {% comment %} Recommended Products Grid {% endcomment %}
+        {% assign variantLimit = section.settings.variant_limit %}
+    	{% assign productLimit = section.settings.recommended_products_limit_to_show %}
+        {%assign mobile_gridValue = section.settings.collection_mobile_grid %}
+        <div class="container recommended-products--grid {%if mobile_gridValue == true %} mobile-grid-view-container {%endif%}">
+          <div class="sixteen columns equal-columns--outside-trim">                        
+            {% if products.size > 0 %}
+                 {% include 'custom-product-loop',mobile_grid: mobile_gridValue,variantLimit: variantLimit, productLimit: productLimit %}
+            {%else%}
+                 <div class="section clearfix collection-matrix">
+                    <p class="quote">{{ 'collections.general.no_matches' | t }}</p>
+                 </div>
+            {%endif%}
+            
+          </div>
+        </div>
+
+      {% endif %}
+   
+    {%comment%}
+    <div class="container">
+      <div class="learn_more_btn_wrapper one-whole text-center">
+        <a class="action_button arrow_icon" href="{{section.settings.view_all_link}}">Mehr erfahren</a>
+      </div>
+    </div>
+    {%endcomment%}
+        
+    {% endcapture %}
+    
+    {% if show_custom_collection %}
+      <div class="meta-related-recommended-collection" data-enabled="{{ section.settings.show_product_recommendations }}">
+        {{ product_collections_markup }}
+      </div>
+
+    {% elsif show_dynamic_collection %}
+      <div class="product-recommendations" data-product-id="{{ product.id }}" data-limit="{{ limit }}" data-enabled="{{ section.settings.show_product_recommendations }}">
+        {{ product_collections_markup }}
+      </div>
+    {% endif %}
+
+  </div>
+
+  {% endif %}
+
+
+{% schema %}
+{
+  "name": "Recommended products",
+  "class": "recommended-products-section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Product recommendations"
+    },
+    {
+      "type":"paragraph",
+      "content": "The settings configured in this section will remain consistent across all product templates. If using the product.details template, adding the Recommended Products content block is also required. [Learn more](https://help.outofthesandbox.com/hc/en-us/articles/360034424013)"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_product_recommendations",
+      "label": "Show dynamic recommendations",
+      "info": "Dynamic recommendations change and improve with time. [Learn more](https://help.shopify.com/en/themes/development/recommended-products)",
+      "default": true
+    },
+    {
+       "type": "checkbox",
+       "id": "collection_mobile_grid",
+       "label": "Mobile Product Grid",
+       "default": false
+    },
+    {
+      "type": "radio",
+      "id": "product_recommendations_style",
+      "label": "Layout",
+      "options": [
+            {
+              "value": "grid",
+              "label": "Grid"
+            }
+          ],
+        "default": "grid",
+        "info":  "Layout"
+        },
+    {
+      "type": "text",
+      "id": "product_recommendations_preheading",
+      "label": "PreHeading",
+      "default": "Mix and Match"
+    },
+    {
+      "type": "text",
+      "id": "product_recommendations_heading",
+      "label": "Heading",
+      "default": "You may also like"
+    },
+    {
+      "type": "url",
+      "id": "view_all_link",
+      "label": "View All Link"
+    },
+    {
+      "type": "range",
+      "id": "products_per_row",
+      "label": "Products per row",
+      "min": 2,
+      "max": 5,
+      "step": 1,
+      "default": 3
+    },
+    {
+       "type": "header",
+       "content": "Recommended Products and Variants To be Shown"
+    },
+    {
+      "type": "range",
+      "id": "recommended_products_limit",
+      "label": "Limit products to fetch",
+      "min": 1,
+      "max": 10,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "recommended_products_limit_to_show",
+      "label": "Limit recommended products to show",
+      "min": 1,
+      "max": 10,
+      "step": 1,
+      "default": 1
+    },
+   {
+      "type": "range",
+      "id": "variant_limit",
+      "label": "Limit Variants",
+      "min": 3,
+      "max": 50,
+      "step": 1,
+      "default": 3
+    }
+  ]
+}
+{% endschema %}
+
+<style>
+  .product-recommendations-container{
+    margin:120px 0px 0px 0px;
+  }
+</style>

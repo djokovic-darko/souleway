@@ -1,0 +1,299 @@
+{% assign margin_top = section.settings.content_margin_top | times: 2 %}
+{% assign margin_bottom = section.settings.content_margin_bottom | times: 2 %}
+{% assign id = section.id %}
+
+
+<style>
+   {% if margin_bottom != blank or margin_bottom != blank %}
+     @media (min-width:1025px){
+      .souleway-section-container-{{id}} {
+        margin-top:{{margin_top}}px;
+        margin-bottom:{{margin_bottom}}px;
+      }
+    }
+    @media (max-width:1024px){
+      .souleway-section-container-{{id}} {
+        margin-top:{{margin_top | divided_by: 2}}px;
+        margin-bottom:{{margin_bottom | divided_by: 2}}px;
+      }
+    }
+  {%endif%}
+</style>
+
+<div class="souleway-section-container-{{id}}">
+ <div class="container">
+  <div class="twelve columns offset-by-two medium-down--one-whole equal-columns--outside-trim">
+    <div class="one-half columns medium-down--one-half  small-down--one-half three_collection_blocks_wrapper first_block text-column">
+        <div class="wrapper_block">
+          <a href="{{ section.settings.link1 }}">
+           {% if section.settings.image1 != blank %}
+              {% include 'image-element', image: section.settings.image1.src, alt: section.settings.image1.alt %}
+            {% else %}
+              <p>
+                {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+              </p>
+            {% endif %}
+          </a>
+          {% if section.settings.title1 != blank and section.settings.link1 != blank %}
+           <div class="collection_link_wrapper">
+              <a href="{{ section.settings.link1 }}" class="action_button">
+                {{ section.settings.title1 | escape }}
+              </a>
+             {% if section.settings.subheading1 != blank  %}
+               <div class="subheading">
+                 <a href="{{ section.settings.link1 }}" class="action_button">{{ section.settings.subheading1 | escape }}</a>
+               </div>
+             {%endif%}
+
+           </div>         
+          {% endif %}
+
+        </div>
+      </div>
+
+    <div class="one-half columns medium-down--one-half  small-down--one-half">
+
+      <div class="one-whole columns medium-down--one-whole  small-down--one-whole three_collection_blocks_wrapper second_block text-column">
+        <div class="wrapper_block">
+          <a href="{{ section.settings.link2 }}">
+            <div class="desktop-only">
+              {% if section.settings.image2 != blank %}
+                  {% include 'image-element', image: section.settings.image2.src, alt: section.settings.image2.alt %}
+              {% else %}
+                <p>
+                  {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+                </p>
+              {% endif %}
+            </div>
+            <div class="mobile-only">
+              {% if section.settings.mobile_image2 != blank %}
+                  {% include 'image-element', image: section.settings.mobile_image2.src, alt: section.settings.mobile_image2.alt %}
+              {% else %}
+                {% if section.settings.image2 != blank %}
+                  {% include 'image-element', image: section.settings.image2.src, alt: section.settings.image2.alt %}
+                {% else %}
+                  <p>
+                    {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+                  </p>
+                {% endif %}
+              {% endif %}
+            </div>
+          </a>
+          
+          {% if section.settings.title2 != blank and section.settings.link2 != blank %}
+          <div class="collection_link_wrapper">
+            <a href="{{ section.settings.link2 }}" class="action_button">
+              {{ section.settings.title2 | escape }}
+            </a>
+            {% if section.settings.subheading2 != blank  %}
+              <div class="subheading">
+                <a href="{{ section.settings.link2 }}" class="action_button">{{ section.settings.subheading2 | escape }}</a>
+              </div>
+            {%endif%}
+
+          </div>         
+          {% endif %}
+
+        </div>
+       </div>
+
+       <div class="one-whole columns medium-down--one-whole  small-down--one-whole  three_collection_blocks_wrapper third_block text-column desktop-third-block">
+          <div class="wrapper_block">
+            <a href="{{ section.settings.link3 }}">
+             {% if section.settings.image3 != blank %}
+                {% include 'image-element', image: section.settings.image3.src, alt: section.settings.image3.alt %}
+              {% else %}
+                <p>
+                  {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+                </p>
+              {% endif %}
+            </a>
+            {% if section.settings.title3 != blank and section.settings.link3 != blank %}
+             <div class="collection_link_wrapper">
+                <a href="{{ section.settings.link3 }}" class="action_button">
+                  {{ section.settings.title3 | escape }}
+                </a>
+
+               {% if section.settings.subheading3 != blank  %}
+                 <div class="subheading">
+                   <a href="{{ section.settings.link3 }}" class="action_button">{{ section.settings.subheading3 | escape }}</a>
+                 </div>
+               {%endif%}
+
+             </div>         
+            {% endif %}
+
+          </div>
+        </div>
+
+    </div>
+   
+    <div class="one-whole columns medium-down--one-whole  small-down--one-whole  three_collection_blocks_wrapper third_block text-column mobile-third-block">
+       <div class="wrapper_block">
+         <a href="{{ section.settings.link3 }}">
+           <div class="desktop-only">
+               {% if section.settings.image3 != blank %}
+                  {% include 'image-element', image: section.settings.image3.src, alt: section.settings.image3.alt %}
+               {% else %}
+               <p>
+                 {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+               </p>
+               {% endif %}
+            </div>
+            <div class="mobile-only">
+               {% if section.settings.mobile_image3 != blank %}
+                  {% include 'image-element', image: section.settings.mobile_image3.src, alt: section.settings.mobile_image3.alt %}
+               {% else %}
+                 <p>
+                   {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+                 </p>
+               {% endif %}
+            </div>
+           </a>
+       
+         {% if section.settings.title3 != blank and section.settings.link3 != blank %}
+         <div class="collection_link_wrapper">
+           <a href="{{ section.settings.link3 }}" class="action_button">
+             {{ section.settings.title3 | escape }}
+           </a>
+
+           {% if section.settings.subheading3 != blank  %}
+           <div class="subheading">
+             <a href="{{ section.settings.link3 }}" class="action_button">{{ section.settings.subheading3 | escape }}</a>
+           </div>
+           {%endif%}
+
+         </div>         
+         {% endif %}
+
+       </div>
+    </div>
+
+   </div>
+  </div>
+</div>
+
+{% schema %}
+   {
+    "name": "Three Collection Blocks",
+    "class": "text-collections-with-images-section",
+    "settings": [
+          {
+          "type": "header",
+          "content": "First Block"
+          },  
+          {
+            "type": "image_picker",
+            "id": "image1",
+            "label": "Image1",
+			"info": "400 x 800px recommended"
+
+          },         
+          {
+            "type": "text",
+            "id": "title1",
+            "label": "Heading1"
+          },
+		  {
+            "type": "text",
+            "id": "subheading1",
+            "label": "Sub Heading"
+          },
+          {
+            "type": "url",
+            "id": "link1",
+            "label": "Button link"
+          },
+	      {
+          "type": "header",
+          "content": "Second Block"
+          },
+		  {
+            "type": "image_picker",
+            "id": "image2",
+            "label": "Desktop Image2",
+			"info": "400 x 400px recommended"
+
+          }, 
+          {
+            "type": "image_picker",
+            "id": "mobile_image2",
+            "label": "Mobile Image2",
+			"info": "200 x 200px recommended"
+
+          }, 
+          {
+            "type": "text",
+            "id": "title2",
+            "label": "Heading"
+          },
+		  {
+            "type": "text",
+            "id": "subheading2",
+            "label": "Sub Heading"
+          },
+          {
+            "type": "url",
+            "id": "link2",
+            "label": "Button link"
+          },
+		  {
+          "type": "header",
+          "content": "Third Block"
+          },
+		  {
+            "type": "image_picker",
+            "id": "image3",
+            "label": "Desktop Image3",
+			"info": "400 x 400px recommended"
+
+          },  
+		 {
+            "type": "image_picker",
+            "id": "mobile_image3",
+            "label": "Mobile Image3",
+			"info": "200 x 200px recommended"
+
+          },
+          {
+            "type": "text",
+            "id": "title3",
+            "label": "Heading"
+          },
+		  {
+            "type": "text",
+            "id": "subheading3",
+            "label": "Sub Heading"
+          },
+          {
+            "type": "url",
+            "id": "link3",
+            "label": "Button link"
+          },
+          {
+            "type": "range",
+            "id": "content_margin_top",
+            "label": "Section Margin Top",
+            "min": 0,
+            "max": 100,
+            "default": 50,
+            "unit": "px"
+           },
+          {
+            "type": "range",
+            "id": "content_margin_bottom",
+            "label": "Section Margin Bottom",
+            "min": 0,
+            "max": 100,
+            "default": 50,
+            "unit": "px"
+          }
+    ],
+  "presets": [
+      {
+        "name": "Three Collection Blocks",
+        "category": "Collection"
+      }
+    ]
+  }
+{% endschema %}

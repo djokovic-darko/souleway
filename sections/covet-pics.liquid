@@ -1,0 +1,63 @@
+<div class="container full-width--false">
+  <div data-section-id="{{ section.id }}" data-section-type="covet-pics-feed">
+    {%- assign sectionHeading = section.settings.title -%}
+    {%- assign gallery_code = section.settings.gallery-code -%}
+    {%- assign sectionSubHeading = section.settings.sub-text -%}
+    <section class="home-section content-area {% if sectionHeading != blank %}has-heading{% endif %}">
+      {% if sectionHeading != blank %}
+        <h2 class="section-title instagram-headline">{{ sectionHeading }}</h2>
+       <p class="section-title instagram-subtext">{{ sectionSubHeading }}@<a href="{{ settings.instagram_link }}" target="_blank" style="text-decoration: underline;">souleway</a></p>
+      {% endif %}
+      <div class="covet-pics-wrap">
+        {{ gallery_code }}
+      </div>
+    </section>
+  </div>
+</div>
+{% schema %}
+{
+  "name": "Covet.pics Gallery",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Instagram feed"
+    },
+	{
+      "type": "text",
+      "id": "sub-text",
+      "label": "Sub Heading",
+      "default": "Join us on Instagram "
+    },
+    {
+      "type": "textarea",
+      "id": "gallery-code",
+      "label": "Gallery Embed Code"
+    }
+  ],
+  "presets": [
+    {
+      "category": "Image",
+      "name": "Covet.pics gallery"
+    }
+  ]
+}
+{% endschema %}
+
+<style>
+  .instagram-headline {
+    text-align:center; 
+    font-size:38px; 
+    margin-bottom: 0 !important;
+    font-weight: 400;     
+  }
+  .instagram-subtext {
+    text-align:center; 
+    margin-bottom: 40px !important;"
+  }
+  
+  @media only screen and (max-width: 798px){
+    .instagram-headline {font-size: 24px !important; letter-spacing: 0px !important;}
+    }
+</style>

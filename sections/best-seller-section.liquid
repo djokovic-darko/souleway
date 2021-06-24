@@ -1,0 +1,120 @@
+{% comment %}
+** Single featured collection - homepage partial **
+- Draggable section
+{% endcomment %}
+
+{% include 'include-best-collection' %}
+
+{% schema %}
+{
+  "name": "Best Seller collection",
+  "class": "best-collection-section",
+  "settings": [
+	{
+       "type": "checkbox",
+       "id": "collection_mobile_grid",
+       "label": "Mobile Product Grid",
+       "default": false
+    },
+    {
+      "type": "text",
+      "id": "section_title",
+      "label": "Section Title",
+	  "default": "Discover"
+    },
+	{
+      "type": "text",
+      "id": "section_subtitle",
+      "label": "Section Subtitle",
+      "default": "Bestseller"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection"
+    },
+    {
+      "type": "radio",
+      "id": "collection_style",
+      "label": "Collection layout",      
+      "options": [
+        {
+          "value": "grid",
+          "label": "Grid"
+        }
+      ],
+	"default": "grid",
+	"info":  "Layout"
+    },
+    {
+      "type": "header",
+      "content": "Products and Variants To be Shown"
+    },
+    {
+      "type": "range",
+      "id": "variant_limit",
+      "label": "Limit Variants",
+      "min": 3,
+      "max": 50,
+      "step": 1,
+      "default": 3
+    },
+    {
+      "type": "range",
+      "id": "product_limit_to_show",
+      "label": "Limit Products to Display",
+      "min": 1,
+      "max": 50,
+      "step": 1,
+      "default": 1
+    },
+    {
+      "type": "header",
+      "content": "Products"
+    },
+    {
+      "type": "range",
+      "id": "products_per",
+      "label": "Products per row",
+      "min": 3,
+      "max": 3,
+      "step": 1,
+      "default": 3
+    },
+    {
+      "type": "range",
+      "id": "products_limit",
+      "label": "Limit products",
+      "min": 2,
+      "max": 50,
+      "step": 1,
+      "default": 9
+    },
+  	{
+      "type": "range",
+      "id": "content_margin_top",
+      "label": "Section Margin Top",
+      "min": 0,
+      "max": 100,
+      "default": 50,
+      "unit": "px"
+     },
+    {
+      "type": "range",
+      "id": "content_margin_bottom",
+      "label": "Section Margin Bottom",
+      "min": 0,
+      "max": 100,
+      "default": 50,
+      "unit": "px"
+    }
+  ],
+  "presets": [{
+    "name": "Best Seller collection",
+    "category": "Collection",
+    "settings": {
+
+    }
+  }]
+}
+{% endschema %}

@@ -1,0 +1,243 @@
+<div class="custom-page-wrapper">
+  {% for block in section.blocks %}
+    <div {{ block.shopify_attributes }} class="page_section_wrapper block__{{ block.type }} block__{{ block.id }}">
+
+      {% if block.type == "three_section_blocks" %}
+
+      {% assign three_wide_display = block.settings.three_wide_display %}
+
+      <div class="container full-width--{{block.settings.three_wide_display}}">                 
+        <div class="three_blocks_side_by_side_wrapper">
+          <div class="inner-wrapper two_blocks">
+            <div class="inner_block">
+              <div class="wrapper_block white-arrow-icon">
+                {% if block.settings.image1 != blank %}
+                {% include 'image-element', image: block.settings.image1.src, alt: block.settings.image1.alt %}
+                {% else %}
+                <p>
+                  {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+                </p>
+                {% endif %}
+                {% if block.settings.title1 != blank and block.settings.link1 != blank %}
+                <div class="collection_link_wrapper">
+                  <h3>
+                    {{ block.settings.title1 | escape }}
+                  </h3>
+                  {% if block.settings.subheading1 != blank  %}
+                  <div class="subheading">
+                    <p>{{ block.settings.subheading1 | escape }}</p>
+                  </div>
+                  {%endif%}
+                  <a href="{{ block.settings.link1}}" class="action_button journal-section">
+                    {{ block.settings.btnLabel1 | escape }}
+                     <span class="arrow_icon">
+                        {% include 'arrow' %}
+                     </span>
+                  </a>
+                </div>         
+                {% endif %}
+
+              </div>
+            </div>
+
+            <div class="inner_block">
+              <div class="wrapper_block white-arrow-icon">
+                {% if block.settings.image2 != blank %}
+                {% include 'image-element', image: block.settings.image2.src, alt: block.settings.image2.alt %}
+                {% else %}
+                <p>
+                  {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+                </p>
+                {% endif %}
+                {% if block.settings.title2 != blank and block.settings.link2 != blank %}
+                <div class="collection_link_wrapper">
+                  <h3>
+                    {{ block.settings.title2 | escape }}
+                  </h3>
+                  {% if block.settings.subheading2 != blank  %}
+                  <div class="subheading">
+                    <p>{{ block.settings.subheading2 | escape }}</p>
+                  </div>
+                  {%endif%}
+
+                  <a href="{{ block.settings.link2}}" class="action_button journal-section">
+                    {{ block.settings.btnLabel2 | escape }}
+                     <span class="arrow_icon">
+                        {% include 'arrow' %}
+                     </span>
+                  </a>
+
+                </div>         
+                {% endif %}
+
+              </div>
+
+            </div>
+          </div>
+
+        </div>                              
+      </div>
+
+      <div class="container p-0">
+         <div class="twelve columns offset-by-two medium-down--one-whole equal-columns--outside-trim">
+        	<div class="three_blocks_side_by_side_wrapper">
+          <div class="inner-wrapper single_block">
+            <div class="inner_block">
+              <div class="wrapper_block white-arrow-icon">
+                {% if block.settings.image3 != blank %}
+                {% include 'image-element', image: block.settings.image3.src, alt: block.settings.image3.alt %}
+                {% else %}
+                <p>
+                  {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+                </p>
+                {% endif %}
+                {% if block.settings.title3 != blank and block.settings.link3 != blank %}
+                <div class="collection_link_wrapper">
+                  <h3>
+                    {{ block.settings.title3 | escape }}
+                  </h3>
+
+                  {% if block.settings.subheading3 != blank  %}
+                  <div class="subheading">
+                    <p>{{ block.settings.subheading3 | escape }}</p>
+                  </div>
+                  {%endif%}
+
+                  <a href="{{ block.settings.link3}}" class="action_button journal-section">
+                    {{ block.settings.btnLabel3 | escape }}
+                      <span class="arrow_icon">
+                        {% include 'arrow' %}
+                      </span>
+                  </a>
+
+                </div>         
+                {% endif %}
+
+              </div>
+            </div>
+          </div>
+        </div>
+         </div>
+      </div>
+
+      {%endif%}
+
+    </div>
+  {% endfor%}
+</div>
+
+{% schema %}
+  {
+    "name": "Journal",
+    "class": "journal-page-template",
+    "max_blocks": 10,
+    "settings": [],
+    "blocks": [
+	{   
+	"type": "three_section_blocks",
+    "name": "Three Section Blocks",
+    "settings": [
+          {
+            "type": "checkbox",
+            "id": "three_wide_display",
+            "label": "Wide display",
+            "default": true
+          },
+          {
+          "type": "header",
+          "content": "First Block"
+          },  
+          {
+            "type": "image_picker",
+            "id": "image1",
+            "label": "Image"
+          },         
+          {
+            "type": "text",
+            "id": "title1",
+            "label": "Heading1"
+          },
+		  {
+            "type": "text",
+            "id": "subheading1",
+            "label": "Sub Heading"
+          },
+		  {
+            "type": "text",
+            "id": "btnLabel1",
+            "label": "button Label"
+          },
+          {
+            "type": "url",
+            "id": "link1",
+            "label": "Button link"
+          },
+	      {
+          "type": "header",
+          "content": "Second Block"
+          },
+		  {
+            "type": "image_picker",
+            "id": "image2",
+            "label": "Image"
+          },          
+          {
+            "type": "text",
+            "id": "title2",
+            "label": "Heading"
+          },
+		  {
+            "type": "text",
+            "id": "subheading2",
+            "label": "Sub Heading"
+          },
+ 		 {
+            "type": "text",
+            "id": "btnLabel2",
+            "label": "button Label"
+          },
+          {
+            "type": "url",
+            "id": "link2",
+            "label": "Button link"
+          },
+		  {
+          "type": "header",
+          "content": "Third Block"
+          },
+		  {
+            "type": "image_picker",
+            "id": "image3",
+            "label": "Image"
+          },         
+          {
+            "type": "text",
+            "id": "title3",
+            "label": "Heading"
+          },
+		  {
+            "type": "text",
+            "id": "subheading3",
+            "label": "Sub Heading"
+          },
+		  {
+            "type": "text",
+            "id": "btnLabel3",
+            "label": "button Label"
+          },
+          {
+            "type": "url",
+            "id": "link3",
+            "label": "Button link"
+          }
+    ]
+   }
+  ]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

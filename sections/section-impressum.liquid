@@ -1,0 +1,106 @@
+<div class="container">
+  <div class="twelve columns offset-by-two medium-down--one-whole equal-columns--outside-trim">
+  	<div class="page_two_collection_blocks_wrapper">
+      {% for block in section.blocks %}
+      {% if section.blocks.size == 1 %}
+        {%- assign column_width = 'sixteen columns' -%}
+        {% elsif section.blocks.size == 3 %}
+          {%- assign column_width = 'one-third column' -%}
+        {% elsif section.blocks.size == 4 %}
+          {%- assign column_width = 'four columns medium-down--one-half' -%}
+        {% elsif section.blocks.size == 5 %}
+          {%- assign column_width = 'one-fifth column medium-down--one-half' -%}
+        {% else %}
+          {%- assign column_width = 'eight columns medium-down--one-half' -%}
+        {% endif %}
+        <div class="{{ column_width }} two_collection_blocks_wrapper text-column" {{ block.shopify_attributes }}>
+          <div class="wrapper_block text-align--{{ block.settings.align_text }}">
+            {% if block.settings.enable_image %}
+              {% if block.settings.image != blank %}
+                {% include 'image-element', image: block.settings.image.src, alt: block.settings.image.alt %}
+              {% else %}
+                <p>
+                  {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+                </p>
+              {% endif %}
+            {% endif %}
+            {% if block.settings.button_label != blank and block.settings.button_link != blank %}
+             <div class="collection_link_wrapper">
+                <a href="{{ block.settings.button_link }}" class="action_button">
+                {{ block.settings.button_label | escape }}
+              </a>
+             </div>         
+            {% endif %}
+
+          </div>
+        </div>
+      {% endfor %}
+  </div>
+  </div>
+</div>
+
+{% schema %}
+  {
+    "name": "Impressum  Page",
+    "class": "impressum-page-template",
+    "max_blocks": 5,
+    "settings": [],
+    "blocks": [
+	  {
+        "type": "collection_block",
+        "name": "Column",
+        "limit": 5,
+        "settings": [
+          {
+            "type": "checkbox",
+            "id": "enable_image",
+            "label": "Show image",
+            "default": true
+          },
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image"
+          },
+          {
+            "type": "text",
+            "id": "button_label",
+            "label": "Button label"
+          },
+          {
+            "type": "url",
+            "id": "button_link",
+            "label": "Button link"
+          },
+          {
+            "type": "select",
+            "id": "align_text",
+            "label": "Text alignment",
+            "default": "left",
+            "options": [
+              {
+                "value": "left",
+                "label": "Left"
+              },
+              {
+                "value": "center",
+                "label": "Center"
+              },
+              {
+                "value": "right",
+                "label": "Right"
+              }
+            ]
+          }
+        ]
+     }
+   ]
+  }
+{% endschema %}
+
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

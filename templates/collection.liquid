@@ -1,0 +1,33 @@
+
+      
+      
+      
+      
+      
+      
+      {% comment %}
+  The contents of the collection.liquid template can be found in /sections/collection-template.liquid
+{% endcomment %}
+
+{% section 'collection-template' %}
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      {% comment %}START ADCELL APP | DONT REMOVE THIS!{% endcomment %}
+      {% for product in collection.products %}
+        {% assign sku-list = sku-list | append: product.variants.first.sku | append: ';' %}
+      {% endfor %}
+      {% assign collection_product_ids_string = sku-list %}
+
+      <script type="text/javascript" src="//www.adcell.de/js/inlineretarget.js?method=category&pid=undefined&categoryName={{collection.title}}&categoryId={{collection.id}}&productIds={{collection_product_ids_string}}&productSeparator=;" async="async"></script>
+    {% comment %}DONT REMOVE THIS | END ADCELL APP{% endcomment %}
+    

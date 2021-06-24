@@ -1,0 +1,280 @@
+{% assign content_margin_top = section.settings.content_margin_top | times: 2 %}
+{% assign content_margin_bottom = section.settings.content_margin_bottom | times: 2 %}
+{% assign id = section.id %}
+
+{% comment %}Section specific CSS{% endcomment %}
+{% style %}
+   {% if content_margin_top != blank or content_margin_bottom != blank %}
+    @media (min-width:1025px){
+      .souleway-section-container-{{id}} {
+        margin-top:{{content_margin_top}}px;
+        margin-bottom:{{content_margin_bottom}}px;
+      }
+    }
+    @media (max-width:1024px){
+      .souleway-section-container-{{id}} {
+        margin-top:{{content_margin_top | divided_by: 2}}px;
+        margin-bottom:{{content_margin_bottom | divided_by: 2}}px;
+      }
+    }
+  {%endif%}
+{% endstyle %}
+
+{% if section.settings.show-utm-parameter-block == true %}
+  <div class="souleway-section-container-{{id}} js-utm-parameter-section hide">
+    <div class="container full-width--true p-0">
+        {% for block in section.blocks %}        
+         {% if section.settings.url-parameter == block.settings.block-type %}
+          {% style %}
+        
+        	   .souleway-section-container-{{id}} .utm-parameter-block.block-{{block.id}}{
+        		background-color: {{block.settings.bg_color}};
+               }
+        
+               .souleway-section-container-{{id}} .utm-parameter-block.block-{{block.id}} .preheading-block{
+        		color: {{block.settings.preheading_color}};
+               }
+
+               .souleway-section-container-{{id}} .utm-parameter-block.block-{{block.id}} .heading-block{
+        	 	color: {{block.settings.heading_color}};
+               }
+
+               .souleway-section-container-{{id}} .utm-parameter-block.block-{{block.id}} .description-block{
+        		color: {{block.settings.description_color}};
+               }
+
+               .souleway-section-container-{{id}} .utm-parameter-block.block-{{block.id}} .description-block  strong{
+                color: {{block.settings.strong_color}};
+               }
+      
+              .souleway-section-container-{{id}} .utm-parameter-block.block-{{block.id}} .close-block{
+                color: {{block.settings.cross_color}};
+               }
+        
+        {% endstyle %}
+        		
+              <div class="utm-parameter-block block-{{block.id}}">
+                <div class="inner-wrapper">
+                  <div class="preheading-block">{{block.settings.preheading}}</div>
+                  <h2 class="heading-block">{{block.settings.heading}}</h2>
+                  <div class="description-block">{{block.settings.description}}</div>
+                </div>
+                {% if section.settings.show-close-icon == true %}
+                  <div class="js-utm-section-close close-block">
+                    x
+                  </div>
+                {%endif%}
+              </div>
+         {%endif%}
+        {% endfor %}
+    </div>
+  </div>
+{%endif%}
+
+{% if section.settings.show-close-icon == true %}
+  <script>
+    $(document).ready(function(e){
+      $('.js-utm-section-close').click(function(e){
+         $('.js-utm-parameter-section').addClass('hide');
+      });
+    });
+  </script>
+{%endif%}
+
+{% if section.settings.enable_utm == true  %}
+<script>
+  console.log("Raju Bhaiye Codee kaha yaha hai");
+  $(document).ready(function () {
+      let pageurlParam = "{{section.settings.url-parameter}}";
+      function getQueryParams(qs) {
+          qs = qs.split('+').join(' ');
+          var params = {},
+              tokens,
+              re = /[?&]?([^=]+)=([^&]*)/g;
+          while (tokens = re.exec(qs)) {
+              params[decodeURIComponent(tokens[1])] = decodeURIComponent(tokens[2]);
+          }
+          return params;
+      }
+      function setCookie(name, value, days) {
+          var expires = "";
+          if (days) {
+              var date = new Date();
+              date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+              expires = "; expires=" + date.toUTCString();
+          }
+          document.cookie = name + "=" + (value || "") + expires + "; path=/";
+      }
+      function getCookie(name) {
+          var nameEQ = name + "=";
+          var ca = document.cookie.split(';');
+          for (var i = 0; i < ca.length; i++) {
+              var c = ca[i];
+              while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+              if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+          }
+          return null;
+      }
+      // coming from the URL
+      var locationQuery = getQueryParams(document.location.search);
+      var url_src_val = locationQuery.utm_source;
+      var url_campaign_val = locationQuery.utm_campaign;
+      if(url_src_val) {
+          // set cookie
+          setCookie('url_src_val', url_src_val, 7);
+      } else {
+          // get the value from cookie
+          url_src_val = getCookie('url_src_val');
+      }
+      if(url_campaign_val) {
+          // set cookie
+          setCookie('url_campaign_val', url_campaign_val, 7);
+          url_campaign_val = getCookie('url_campaign_val');
+      } else {
+          // get the value from cookie
+      }
+      // saved by the client
+      var schemaQuery = getQueryParams(pageurlParam);
+      var schemaUrlSrc_val = schemaQuery.utm_source;
+      var schemaUrlCampaign_val = schemaQuery.utm_campaign,;
+      console.log({url_src_val,schemaUrlSrc_val,url_campaign_val,schemaUrlCampaign_val});
+      if ((url_src_val === schemaUrlSrc_val) && (url_campaign_val == schemaUrlCampaign_val)) {
+          
+          $('.js-utm-parameter-section').removeClass('hide');
+          $('.shopify-section #pagecontent').css('padding', '0px');
+      }
+  });
+</script>
+{%endif%}
+
+
+
+{% schema %}
+  {
+    "name": "UTM Parameter Section",
+    "settings": [
+	  {
+        "type": "checkbox",
+        "id": "show-utm-parameter-block",
+        "label": "Show Parameter Block",
+	    "default": true
+      },
+	  {
+        "type": "checkbox",
+        "id": "show-close-icon",
+        "label": "Show Close Icon",
+	    "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "enable_utm",
+        "label": "Enable UTM",
+        "default": true
+      },
+      {
+        "type": "text",
+        "id" : "url-parameter",
+        "label": "Page UTM parameter",
+        "default": "utm_source=fb"	
+      },
+      {
+        "type": "range",
+        "id": "content_margin_top",
+        "label": "Section Margin Top",
+        "min": 0,
+        "max": 100,
+        "default": 0,
+        "unit": "px"
+       },
+      {
+        "type": "range",
+        "id": "content_margin_bottom",
+        "label": "Section Margin Bottom",
+        "min": 0,
+        "max": 100,
+        "default": 0,
+        "unit": "px"
+      }
+	],
+	"blocks": [
+      {
+        "type": "content-block",
+        "name": "Content Block",
+		"settings": [
+			{
+              "type": "header",
+              "content": "Content"
+            },
+            {
+              "type": "text",
+              "id" : "block-type",
+              "label": "Block Type",
+              "default": "utm_source=fb",
+			  "info": "Please add same value as page utm parameter"
+            },
+            {
+              "type": "richtext",
+              "id": "preheading",
+              "label": "Preheading"
+            },
+			{
+              "type": "text",
+              "id": "heading",
+              "label": "Heading"
+            },
+			{
+              "type": "richtext",
+              "id": "description",
+              "label": "Description"
+            },
+            {
+              "type": "header",
+              "content": "Color"
+            },
+			{
+              "type": "color",
+              "id": "bg_color",
+              "label": "Bg Color",
+			  "default": "#a0b5da"
+            },
+			{
+              "type": "color",
+              "id": "preheading_color",
+              "label": "Preheading Color",
+			  "default": "#000"
+            },
+			{
+              "type": "color",
+              "id": "heading_color",
+              "label": "Heading Color",
+			  "default": "#000"
+            },
+		    {
+              "type": "color",
+              "id": "description_color",
+              "label": "Description Color",
+ 			  "default": "#000"
+            },
+			{
+              "type": "color",
+              "id": "strong_color",
+              "label": "Text Bold Color",
+ 			  "default": "#000"
+            },
+			{
+              "type": "color",
+              "id": "cross_color",
+              "label": "Cross Button Color",
+ 			  "default": "#fff"
+            }
+		]
+	  }
+	]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

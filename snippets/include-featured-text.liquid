@@ -1,0 +1,129 @@
+{% comment %}
+  Snippet can be used in section or block
+  eg. {% include 'include-featured-text' %}
+{% endcomment %}
+
+{% comment %}Assign object as block or section{% endcomment %}
+{% if type == 'block' %}
+  {% assign object = block %}
+{% else %}
+  {% assign object = section %}
+{% endif %}
+
+{% assign id = object.id %}
+{% comment %}Featured text settings {% endcomment %}
+{% assign image = object.settings.image %}
+{% assign title = object.settings.title %}
+{% assign content = object.settings.content %}
+{% assign text_size = object.settings.text_size %}
+{% assign text_alignment = object.settings.text_alignment %}
+{% assign button_label = object.settings.button_label %}
+{% assign button_link = object.settings.button_link %}
+{% assign margin_top = object.settings.content_margin_top | times: 2 %}
+{% assign margin_bottom = object.settings.content_margin_bottom | times: 2 %}
+{% assign css_class = object.settings.css_class %}
+{% assign custom_css = object.settings.custom_css %}
+{%assign heading = object.settings.heading %}
+{%assign subheading = object.settings.subheading %}
+
+<style>
+  
+  .rich-text__text.rich-text__text-{{ id }}{
+    font-size: {{ object.settings.content_font_size }}px;
+  }
+  
+   @media (max-width:768px){
+    .rich-text__text.rich-text__text-{{ id }}{
+       font-size: 18px;
+     }
+   }
+  
+  .rich-text__text{
+    font-size: {{ object.settings.content_font_size }}px;
+    font-family: sofia-pro, sans-serif;
+    font-weight: 300;
+    font-style: normal;
+  }
+  
+  
+  .text-subheading{
+    margin-top:50px;
+  }
+  
+  .text-heading{
+    margin-bottom:20px;
+    font-size:38px;
+  }
+  
+  @media (max-width:768px) {
+     .text-heading{
+      font-size: 24px;
+      font-weight: 300;
+      letter-spacing: 0;
+      line-height: 50px;
+     }
+  }
+  
+   
+  .rich-text__text  .action_button {
+     @media (min-width:769px) {
+      font-size:16px;
+    }	
+  }
+  
+  {% include 'css-loop', css: custom_css, id: id %}
+  
+  {% if margin_bottom != blank or margin_bottom != blank %}
+  
+    @media (min-width:1025px){
+      .souleway-section-container-{{id}} {
+        margin-top:{{margin_top}}px;
+        margin-bottom:{{margin_bottom}}px;
+      }
+    }
+    @media (max-width:1024px){
+      .souleway-section-container-{{id}} {
+        margin-top:{{margin_top | divided_by: 2}}px;
+        margin-bottom:{{margin_bottom | divided_by: 2}}px;
+      }
+    }
+  {%endif%}
+</style>
+
+<div class="souleway-section-container-{{id}} {{css_class}}">
+  <div class="container">
+    <div class="ten columns offset-by-three">
+      <div class="rich-text__content section {{ text_alignment }} clearfix">      
+        <div class="rich-text__text rich-text__text-{{id}} {{ text_size }}">
+          
+          {%if heading != blank %}
+            <p class="text-heading">
+               {{heading}}
+            </p>
+          {%endif%}
+          
+          {% if content != blank %}
+            {{ content }}
+          {% endif %}
+          
+          {%if subheading != blank %}
+            <p class="text-subheading">
+              {{subheading}}
+            </p>
+          {%endif%}
+
+          {% if button_label != blank %}
+            <a href="{{ button_link }}" class="action_button">
+              {{ button_label }}
+              {%comment%}
+               <span class="arrow_icon">
+                {% include 'arrow' %}
+              </span>
+              {%endcomment%}
+            </a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

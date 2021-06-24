@@ -1,0 +1,178 @@
+<div class="container">
+  
+  {% assign margin_top = section.settings.content_margin_top | times: 2 %}
+  {% assign margin_bottom = section.settings.content_margin_bottom | times: 2 %}
+  
+  {% style %}
+   {% if margin_top != blank or margin_bottom != blank %}
+    @media (min-width:1025px){
+      .accordion-blocks-wrapper {
+        margin-top:{{margin_top}}px;
+        margin-bottom:{{margin_bottom}}px;
+      }
+    }
+    @media (max-width:1024px){
+      .accordion-blocks-wrapper {
+        margin-top:{{margin_top | divided_by: 2}}px;
+        margin-bottom:{{margin_bottom | divided_by: 2}}px;
+      }
+    }
+  {%endif%}
+  {% endstyle %}
+  
+  <div class="accordion-blocks-wrapper">
+    <div class="twelve offset-by-two medium-down--one-whole equal-columns--outside-trim">
+
+    {% for block in section.blocks %}
+
+     {%- assign column_width = 'sixteen columns' -%}
+
+      <div id="accordion" class="{{ column_width }} {% if block.settings.show_accordion == true %} accordion-container {%else%} accordion-link-container {%endif%} text-column" {{ block.shopify_attributes }}>
+       {% if block.settings.accordion_title != blank and block.settings.accordion_content != blank %}
+          <article class="content-entry text-align--{{ block.settings.accordion_title }}">
+           
+            {% if block.settings.show_accordion == false %}
+            	<a href="{{block.settings.page_link}}"> 
+            {%endif%}
+                  
+              <div class="{% if block.settings.show_accordion == true %} accordion-block-title {%else%} accordion-link-title {%endif%}">
+                
+                 <p class="block-title">
+                     {{ block.settings.accordion_title }}
+                 </p>
+
+                 <p class="block-subtitle">{{ block.settings.accordion_subtitle }}</p>
+                 <span class="right icon-right-arrow"></span>
+              </div>
+                  
+            {% if block.settings.show_accordion == false %}
+            	</a>
+            {%endif%}
+            
+             <div class="{% if block.settings.show_accordion == true %} accordion-content {%else%} accordion-link-content {%endif%}">
+               <p>{{ block.settings.accordion_content }}</p>
+             </div>
+          </article>     
+        {%endif%}
+      </div>
+
+    {% endfor %}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+  {
+    "name": "Accordion Blocks",
+    "class": "accordion-blocks-section",
+    "settings": [
+      {
+        "type": "range",
+        "id": "content_margin_top",
+        "label": "Section Margin Top",
+        "min": 0,
+        "max": 100,
+        "default": 50,
+        "unit": "px"
+      },
+      {
+        "type": "range",
+        "id": "content_margin_bottom",
+        "label": "Section Margin Bottom",
+        "min": 0,
+        "max": 100,
+        "default": 50,
+        "unit": "px"
+      }
+	],
+    "blocks": [
+      {
+        "type": "accordion",
+        "name": "Accordion",
+        "limit": 10,
+        "settings": [
+          {
+            "type": "text",
+            "id": "accordion_title",
+            "label": "Accordion label"
+          },
+		  {
+            "type": "text",
+            "id": "accordion_subtitle",
+            "label": "Accordion Subtitle"
+          },
+          {
+            "type": "url",
+            "id": "page_link",
+            "label": "Page Link"
+          },
+          {
+            "type": "checkbox",
+            "id": "show_accordion",
+            "label": "Apply Accordion"
+          },
+          {
+            "type": "text",
+            "id": "accordion_content",
+            "label": "Accordion Content"
+          },
+          {
+            "type": "select",
+            "id": "align_text",
+            "label": "Text alignment",
+            "default": "left",
+            "options": [
+              {
+                "value": "left",
+                "label": "Left"
+              },
+              {
+                "value": "center",
+                "label": "Center"
+              },
+              {
+                "value": "right",
+                "label": "Right"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}
+
+<script>
+  $(document).ready(function(e) {
+		var Accordion = function(el, multiple) {
+				this.el = el || {};
+				this.multiple = multiple || false;
+
+				var links = this.el.find('.accordion-block-title');
+				links.on('click', {
+						el: this.el,
+						multiple: this.multiple
+				}, this.dropdown)
+		}
+
+		Accordion.prototype.dropdown = function(e) {
+				var $el = e.data.el;
+				$this = $(this),
+						$next = $this.next();
+
+				$next.slideToggle();
+				$this.parent().toggleClass('open');
+
+				if (!e.data.multiple) {
+						$el.find('.accordion-content').not($next).slideUp().parent().removeClass('open');
+				};
+		}
+		var accordion = new Accordion($('.accordion-container'), false);
+});
+
+$(document).on('click', function (event) {
+  if (!$(event.target).closest('#accordion').length) {
+    $this.parent().toggleClass('open');
+  }
+});
+</script>

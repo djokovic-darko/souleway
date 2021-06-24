@@ -1,0 +1,30 @@
+ <section class="banner full-width--true">
+   {% assign image = section.settings.banner_image %}
+   {% assign pretext = section.settings.banner_pretext %}
+   {% assign title = section.settings.banner_title %}
+   {% assign mobile_image_crop = section.settings.banner_mobile_image_crop %}
+   {% assign mobile_crop = 'mobile-banner--crop-' | append: mobile_image_crop %}
+   {% assign text_position = section.settings.banner_text_position %}
+   {% assign text_align = section.settings.banner_text_align %}
+   {% if image != nil %}
+   {% include 'image-element', image: image, alt: image.alt, stretch_width: true, additional_classes: mobile_crop%}
+   {% else %}
+   {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg placeholder-svg--banner' }}
+   {% endif %}
+   {% unless pretext == blank and title == blank %}
+   <div class="position-{{ text_position }} caption js-caption">
+     <div class="caption-content  align-{{ text_align }}">
+       {% if pretext != blank %}
+       <div class="pretext">
+         {{ pretext }}
+       </div>
+       {% endif %}
+       {% if title != blank %}
+       <h1 class="headline">
+         {{ title }}
+       </h1>
+       {% endif %}             
+     </div>
+   </div>
+   {% endunless %}
+</section>

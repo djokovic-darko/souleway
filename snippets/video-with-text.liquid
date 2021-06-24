@@ -1,0 +1,115 @@
+{% if type == 'block' %}
+  {% assign id = block.id %}
+  {% assign wide_display = block.settings.wide_display %}
+  {% assign autoplay = block.settings.autoplay %}
+  {% assign autoloop = block.settings.autoloop %}
+  {% assign controls = block.settings.controls %}
+  {% assign mp4 = block.settings.video_mp4 %}
+  {% assign title = block.settings.title %}
+  {% assign subtitle = block.settings.subtitle %}
+  {% assign button1_label = block.settings.button1_label %}
+  {% assign button1_link = block.settings.button1_link %}
+  {% assign margin_top = block.settings.content_margin_top | times: 2 %}
+  {% assign margin_bottom = block.settings.content_margin_bottom | times: 2 %}
+  {% assign css_class = block.settings.css_class %}
+{% else %}
+  {% assign id = section.id %}
+  {% assign wide_display = section.settings.wide_display %}
+  {% assign autoplay = section.settings.autoplay %}
+  {% assign autoloop = section.settings.autoloop %}
+  {% assign controls = section.settings.controls %}
+  {% assign mp4 = section.settings.video_mp4 %}
+  {% assign title = section.settings.title %}
+  {% assign subtitle = section.settings.subtitle %}
+  {% assign button1_label = section.settings.button1_label %}
+  {% assign button1_link = section.settings.button1_link %}
+  {% assign margin_top = section.settings.content_margin_top | times: 2 %}
+  {% assign margin_bottom = section.settings.content_margin_bottom | times: 2 %}
+  {% assign css_class = section.settings.css_class %}
+{% endif %}
+
+
+
+{% comment %}Is the color set to transparent?{% endcomment %}
+{% assign mobile_text_alpha = mobile_text_color | color_extract: 'alpha' %}
+
+{% comment %}Section specific CSS{% endcomment %}
+{% style %}
+
+   {% if margin_bottom != blank or margin_bottom != blank %}
+    @media (min-width:1025px){
+      .souleway-section-container-{{id}} {
+        margin-top:{{margin_top}}px;
+        margin-bottom:{{margin_bottom}}px;
+        overflow: hidden;
+      }
+    }
+    @media (max-width:1024px){
+      .souleway-section-container-{{id}} {
+        margin-top:{{margin_top | divided_by: 2}}px;
+        margin-bottom:{{margin_bottom | divided_by: 2}}px;
+	    overflow: hidden;
+      }
+    }
+  {%endif%}
+   @media (max-width:1024px){
+    .index-video-with-text-section .featured-link--half .info.text-align--left{
+      text-align: center;
+    }
+  }
+
+{% endstyle %}
+
+
+
+<div class="souleway-section-container-{{id}} full-width--{{ wide_display }} {{css_class}}">
+	
+  {% if wide_display == false %}
+<div class="container">
+  <div class="sixteen columns">
+{% endif %}
+    
+   <div class="video-section video-text-section-wrapper featured-link--section" id="block-{{ block.id }}">
+        
+    <div class="featured-link--half
+         video-with-text-section showPosterImage--false">
+            
+      {% if mp4 != blank %}
+        <video muted="" playsinline="" {% if controls == true %} controls {%endif%}  {%if autoloop == true %} loop {%endif%} {% if autoplay == true %} autoplay {%endif%}>
+          <source src="{{mp4}}" type="video/mp4">
+        </video>
+      {%else%}
+      	<p>Please upload mp4 video link</p>
+      {%endif%}
+
+                  
+    </div>
+    
+    <div class="featured-link--half">
+      <div class="text-block-wrapper">
+        <div class="info text-align--left">
+          {% if title != blank %}
+          <p class="collection_title">{{title}}</p>
+          {%endif%}
+          {% if subtitle != blank %}
+          <div class="description">
+            {{subtitle}}
+          </div>
+          {%endif%}
+          {% if button1_link != blank %}
+          <a href="{{button1_link}}" class="action_button">
+            {{button1_label}}
+          </a>
+          {%endif%}
+        </div>
+      </div>
+    </div>
+        
+   </div>
+    
+{% if wide_display == false %}
+  </div>
+</div>
+{% endif %}
+
+</div>

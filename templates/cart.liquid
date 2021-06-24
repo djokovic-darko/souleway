@@ -1,0 +1,42 @@
+
+      
+      
+      
+      
+      
+      
+      {% comment %}
+  The contents of the cart.liquid template can be found in /sections/cart-template.liquid
+{% endcomment %}
+
+{% section 'cart-template' %}
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      {% comment %}START ADCELL APP | DONT REMOVE THIS!{% endcomment %}
+      {% assign cart_items_ids = cart.items | map: 'sku' %}
+      {% assign cart_items_ids_string = cart_items_ids | join: ';' %}
+
+      {% assign cart_items_quantities = cart.items | map: 'quantity' %}
+      {% assign cart_items_quantities_string = cart_items_quantities | join: ';' %}
+
+      {% assign cart_items_count = cart.items.size %}
+      
+      {% if undefined <= 9 %}
+        {% assign tax_times = '1.0undefined' %}
+      {% else %}
+        {% assign tax_times = '1.undefined' %}
+      {% endif %}
+
+      <script type="text/javascript" src="//www.adcell.de/js/inlineretarget.js?method=basket&pid=undefined&productIds={{cart_items_ids_string}}&productSeparator=;&quantities={{cart_items_quantities_string}}&basketProductCount={{cart.item_count}}&basketTotal={{cart.total_price | divided_by: tax_times | money_without_currency}}" async="async"></script>
+    {% comment %}DONT REMOVE THIS | END ADCELL APP{% endcomment %}
+    

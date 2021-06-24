@@ -1,0 +1,185 @@
+{% assign margin_top = section.settings.content_margin_top | times: 2 %}
+{% assign margin_bottom = section.settings.content_margin_bottom | times: 2 %}
+{% assign id = section.id %}
+
+{% comment %}Section specific CSS{% endcomment %}
+{% style %}
+   {% if margin_bottom != blank or margin_bottom != blank %}
+    @media (min-width:1025px){
+      .souleway-section-container-{{id}} {
+        margin-top:{{margin_top}}px;
+        margin-bottom:{{margin_bottom}}px;
+      }
+    }
+    @media (max-width:1024px){
+      .souleway-section-container-{{id}} {
+        margin-top:{{margin_top | divided_by: 2}}px;
+        margin-bottom:{{margin_bottom | divided_by: 2}}px;
+      }
+    }
+  {%endif%}
+{% endstyle %}
+
+<div class="souleway-section-container-{{id}}">
+  <div class="container">
+    <div class="twelve columns offset-by-two medium-down--one-whole equal-columns--outside-trim">
+      {% for block in section.blocks %}
+      {% if section.blocks.size == 1 %}
+      {%- assign column_width = 'sixteen columns' -%}
+      {% elsif section.blocks.size == 3 %}
+      {%- assign column_width = 'one-third column' -%}
+      {% elsif section.blocks.size == 4 %}
+      {%- assign column_width = 'four columns medium-down--one-half small-down--one-half' -%}
+      {% elsif section.blocks.size == 5 %}
+      {%- assign column_width = 'one-fifth column medium-down--one-half small-down--one-half' -%}
+      {% else %}
+      {%- assign column_width = 'eight columns medium-down--one-half small-down--one-half' -%}
+      {% endif %}
+      <div class="{{ column_width }} two_collection_blocks_wrapper text-column" {{ block.shopify_attributes }}>
+        <div class="wrapper_block text-align--{{ block.settings.align_text }}">
+           
+          {% if block.settings.enable_image %}
+          <a href="{{ block.settings.button_link }}">
+            <div class="desktop-only">
+              {% if block.settings.image != blank %}
+              	{% include 'image-element', image: block.settings.image.src, alt: block.settings.image.alt %}
+              {% else %}
+              <p>
+                {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+              </p>
+              {% endif %}
+            </div>
+            <div class="mobile-only">
+              {% if block.settings.mobile_image != blank %}
+               {% include 'image-element', image: block.settings.mobile_image.src, alt: block.settings.mobile_image.alt %}
+              {% else %}
+                {% if block.settings.image != blank %}
+                  {% include 'image-element', image: block.settings.image.src, alt: block.settings.image.alt %}
+                {% else %}
+                  <p>
+                    {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+                  </p>
+                {% endif %}
+              {% endif %}
+            </div>
+           </a>
+          {% endif %}
+          {% if block.settings.button_label != blank and block.settings.button_link != blank %}
+          <div class="collection_link_wrapper  {% if template contains "index" %}home-page{%endif%}">
+            <a href="{{ block.settings.button_link }}" class="action_button">
+              {{ block.settings.button_label | escape }}
+            </a>
+            <div class="subheading">
+              <a href="{{ block.settings.button_link }}" class="action_button subtext">{{block.settings.section_subtext | escape }}</a>
+            </div>        
+            
+          </div>         
+          {% endif %}
+
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+  {
+    "name": "Two Collection Blocks",
+    "class": "text-collections-with-images-section",
+    "settings": [
+     {
+      "type": "range",
+      "id": "content_margin_top",
+      "label": "Section Margin Top",
+      "min": 0,
+      "max": 100,
+      "default": 50,
+      "unit": "px"
+     },
+    {
+      "type": "range",
+      "id": "content_margin_bottom",
+      "label": "Section Margin Bottom",
+      "min": 0,
+      "max": 100,
+      "default": 50,
+      "unit": "px"
+    }
+    ],
+    "blocks": [
+      {
+        "type": "collection_block",
+        "name": "Column",
+        "limit": 5,
+        "settings": [
+          {
+            "type": "checkbox",
+            "id": "enable_image",
+            "label": "Show image",
+            "default": true
+          },
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Desktop Image"
+          },
+          {
+            "type": "image_picker",
+            "id": "mobile_image",
+            "label": "Mobile Image"
+          },
+          {
+            "type": "text",
+            "id": "button_label",
+            "label": "Button label"
+          },
+          {
+            "type": "text",
+            "id": "section_subtext",
+            "label": "Section Subtext"
+          },
+          {
+            "type": "url",
+            "id": "button_link",
+            "label": "Button link"
+          },
+          {
+            "type": "select",
+            "id": "align_text",
+            "label": "Text alignment",
+            "default": "left",
+            "options": [
+              {
+                "value": "left",
+                "label": "Left"
+              },
+              {
+                "value": "center",
+                "label": "Center"
+              },
+              {
+                "value": "right",
+                "label": "Right"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "Two Collection Blocks",
+        "category": "Collection",
+        "blocks": [
+          {
+            "type": "collection_block"
+          },
+          {
+            "type": "collection_block"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

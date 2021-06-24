@@ -1,0 +1,674 @@
+{% comment %}
+** Collection list - default view **
+- Template
+- Uses blocks
+- This template can be viewed by going to /collections of the shop.
+{% endcomment %}
+
+{% if section.settings.image %}
+  <header class="banner center page-banner dark-overlay-{{ section.settings.image_darken }}">
+    {% include 'image-element', image: section.settings.image, alt: section.settings.image.alt, stretch_width: true, progressive: true %}
+      {% if section.settings.display_collection_title %}
+        <div class="caption">
+          <h1 class="headline">{{ 'collections.general.title' | t }}</h1>
+        </div>
+      {% endif %}
+  </header>
+{% endif %}
+
+<a name="pagecontent" id="pagecontent"></a>
+
+<div class="container mobile-grid-view-container">
+  {% paginate collections by section.settings.pagination_limit %}
+    {% assign collections_per_row = section.settings.collections_per_row %}
+    <div class="clearfix breadcrumb-collection">
+      {% if section.settings.collection_breadcrumb %}
+        <script type="application/ld+json">
+          {
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              {
+                "@type": "ListItem",
+                "position": 1,
+                "item": {
+                  "@id": "{{ shop.url }}",
+                  "name": "{{ 'general.breadcrumbs.home' | t }}"
+                }
+              },
+              {
+                "@type": "ListItem",
+                "position": 2,
+                "item": {
+                  "@id": "{{ routes.collections_url }}",
+                  "name": "{{ 'collections.general.title' | t }}"
+                }
+              }
+            ]
+          }
+        </script>
+
+        <div class="eight columns breadcrumb_text">
+          <a href="{{ shop.url }}" title="{{ shop.name | escape }}" class="breadcrumb_link">
+            <span>{{ 'general.breadcrumbs.home' | t }}</span>
+          </a>
+          <span class="breadcrumb-divider">/</span>
+          <a href="{{ routes.collections_url }}" class="breadcrumb_link">
+            <span>{{ 'collections.general.title' | t }}</span>
+          </a>
+
+          {% if paginate.pages != 0 %}
+            <span class="breadcrumb-divider">/</span> {{ 'general.breadcrumbs.page' | t: current_page: paginate.current_page, pages: paginate.pages }}
+          {% endif %}
+        </div>
+      {% endif %}      
+    </div>
+    <div class="section clearfix">
+      {% if section.settings.display_collection_title and section.settings.image == blank %}
+        <div class="sixteen columns">
+          <h1>{{ 'collections.general.title' | t }}</h1>
+        </div>
+      {% endif %}      
+    </div>
+  
+{% comment %}Check to see if sidebar should be enabled{% endcomment %}
+  {% if section.blocks.size > 0 %}
+  	{% for block in section.blocks %}
+  		{% if block.type == "collection_image_block" %}
+  			{% assign custom_collection_block = true %}
+  			{% assign sidebar = false %}  	
+  		{% else %}
+  			{% assign custom_collection_block = false %}
+  			{% assign sidebar = true %}  	
+  		{% endif %}
+  	{% endfor %}
+  {% endif %}  
+ 
+    {% if sidebar %}
+      {% include 'sidebar' %}
+      <div class="twelve columns list-collection-wrapper medium-down--one-whole">
+    {% else %}
+      <div class="sixteen columns list-collection-wrapper">
+    {% endif %}
+
+                     
+     {% if section.settings.section_page_heading %}
+         <div class="sixteen columns">
+          <div class="page_section_header">
+            <div class="preHeading">
+              {{section.settings.products_count}}
+            </div>
+
+           <p class="title">{{section.settings.section_page_heading}}</p>
+          </div>
+        </div>
+      {% endif %}
+
+    <div class="list-collections clearfix equal-columns--clear equal-columns--outside-trim">
+
+      {%assign collection_limit = 3 %}
+      
+      {% assign collection_linklist = section.settings.collection_linklist %}
+      {% for link in linklists[collection_linklist].links limit: collection_limit %}
+      
+            {% assign collection = link.object %}
+            {% capture collection_title %}{{ collection.title | escape }}{% endcapture %}  
+             <div class="
+              one-third column
+              thumbnail {% cycle 'even', 'odd' %}
+              medium-down--one-whole
+              small-down--one-whole">
+
+            <div class="product-wrap">
+              <div class="image__container">                
+                {% if section.blocks[forloop.index0].type == "collection_image_block"%}
+                  {% for block in section.blocks %}
+                
+                  {% if block.type == "collection_image_block" and block.settings.collection_handle == collection.handle %}           
+                  <a href="{{ collection.url }}" title="{{ collection_title }}">
+                      {% assign collection_image = block.settings.custom_collection_image %}                
+                    {% include 'image-element', image: collection_image, alt: collection.title, object_fit: section.settings.align_height, max_height: section.settings.collection_height %}
+                  </a>
+                  {% break %}
+                  {% endif %}
+                  {% endfor %}
+                {% else %}
+                <a href="{{ collection.url }}" title="{{ collection_title }}">                                    
+                	{% if collection.image and section.settings.show_collection_image == false %}
+                    {% assign collection_image = collection.image.src %}
+                    {% elsif section.settings.show_collection_image == true %}
+                    {% assign collection_image = collection.products.first.featured_image %}
+                    {% else %}
+                    {% assign collection_image = collection.products.first.featured_image %}
+                    {% endif %}
+                  {% include 'image-element', image: collection_image, alt: collection.title, object_fit: section.settings.align_height, max_height: section.settings.collection_height %}
+                </a>
+                {%endif%}
+              </div>
+
+             <a class="collection-thumbnail-overlay" href="{{ collection.url }}" title="{{ collection_title }}">
+                   
+               <div class="info">                           
+                 <span class="title">{{ collection.title }}</span> 
+                  <span class="title title--subheading">{{section.settings.section_subtext | escape }} </span>
+               </div>
+              </a>
+              </div>
+            </div>
+      {% endfor %}
+    </div>
+                   
+   <div class="list-collections clearfix equal-columns--clear equal-columns--outside-trim">     
+    
+        <div class="
+                    one-half column
+                    thumbnail {% cycle 'even', 'odd' %}
+                    medium-down--one-whole
+                    small-down--one-whole">
+          	          
+          <div class="product-wrap">
+            <div class="image__container">
+                {%- if section.settings.mood_image -%}
+                  {% assign image = section.settings.mood_image %}              
+                {% endif %}
+                {% include 'image-element', image: image, alt: collection.title, object_fit: section.settings.align_height, max_height: section.settings.collection_height %}
+                           
+            </div>
+          </div>
+        </div>
+     {% assign collection_offset = 3 %}
+     {% for link in linklists[collection_linklist].links offset:collection_offset limit: 1 %}      
+        {% assign collection = link.object %}
+        {% capture collection_title %}{{ collection.title | escape }}{% endcapture %}  
+
+        <div class="
+                    one-half column
+                    thumbnail {% cycle 'even', 'odd' %}
+                    medium-down--one-whole
+                    small-down--one-whole">
+
+          <div class="product-wrap">
+            <div class="image__container">
+                {% if section.blocks[collection_offset].type == "collection_image_block" %}
+              
+                  {% for block in section.blocks %}
+                  {% if block.type == "collection_image_block" and block.settings.collection_handle == collection.handle %}           
+                  <a href="{{ collection.url }}" title="{{ collection_title }}">
+                      {% assign collection_image = block.settings.custom_collection_image %}                
+                    {% include 'image-element', image: collection_image, alt: collection.title, object_fit: section.settings.align_height, max_height: section.settings.collection_height %}
+                  </a>
+                  {% break %}
+                  {% endif %}
+                  {% endfor %}
+                {% else %}
+                <a href="{{ collection.url }}" title="{{ collection_title }}">                                    
+                	{% if collection.image and section.settings.show_collection_image == false %}
+                    {% assign collection_image = collection.image.src %}
+                    {% elsif section.settings.show_collection_image == true %}
+                    {% assign collection_image = collection.products.first.featured_image %}
+                    {% else %}
+                    {% assign collection_image = collection.products.first.featured_image %}
+                    {% endif %}
+                  {% include 'image-element', image: collection_image, alt: collection.title, object_fit: section.settings.align_height, max_height: section.settings.collection_height %}
+                </a>
+                {%endif%}
+              </div>
+
+              <a class="collection-thumbnail-overlay" href="{{ collection.url }}" title="{{ collection_title }}">
+                   
+               <div class="info">                           
+                 <span class="title">{{ collection.title }}</span>
+                 <span class="title title--subheading">{{section.settings.section_subtext | escape }} </span>
+               </div>
+                  
+              </a>
+          </div>
+        </div>
+      {% endfor %}
+
+   </div>
+
+  
+   <div class="list-collections clearfix equal-columns--clear equal-columns--outside-trim">
+          
+     {% for link in linklists[collection_linklist].links offset:4 %}
+     	
+        {% assign block_offset = forloop.index | plus: 1  %}  
+        {% assign collection = link.object %}
+        {% capture collection_title %}{{ collection.title | escape }}{% endcapture %}  
+     
+        <div class="one-third column
+                    thumbnail {% cycle 'even', 'odd' %}
+                    medium-down--one-whole
+                    small-down--one-whole">
+          
+          <div class="product-wrap">
+            <div class="image__container">
+               {% if section.blocks[block_offset].type == "collection_image_block"%}
+                  {% for block in section.blocks %}
+                    {% if block.type == "collection_image_block" and block.settings.collection_handle == collection.handle %}             
+                      <a href="{{ collection.url }}" title="{{ collection_title }}">
+                          {% assign collection_image = block.settings.custom_collection_image %}                
+                        {% include 'image-element', image: collection_image, alt: collection.title, object_fit: section.settings.align_height, max_height: section.settings.collection_height %}
+                      </a>
+                      {% break %}
+                    {% endif %}
+                  {% endfor %}
+               {% else %}
+                <a href="{{ collection.url }}" title="{{ collection_title }}">                                    
+                      {% if collection.image and section.settings.show_collection_image == false %}
+                        {% assign collection_image = collection.image.src %}
+                        {% elsif section.settings.show_collection_image == true %}
+                        {% assign collection_image = collection.products.first.featured_image %}
+                      {% else %}
+                        {% assign collection_image = collection.products.first.featured_image %}
+                      {% endif %}
+                      {% include 'image-element', image: collection_image, alt: collection.title, object_fit: section.settings.align_height, max_height: section.settings.collection_height %}
+                  </a>
+               {%endif%}
+            </div>
+            
+            <a class="collection-thumbnail-overlay" href="{{ collection.url }}" title="{{ collection_title }}">                   
+             <div class="info">                           
+               <span class="title">{{ collection.title }}</span> 
+               <span class="title title--subheading">{{section.settings.section_subtext | escape }} </span>
+             </div>                
+            </a>
+          </div>
+        </div>
+      {% endfor %}
+   </div>
+        
+
+      {% include 'pagination' with sidebar %}
+    </div>
+  {% endpaginate %}
+</div>
+  
+ <div class="container full-width--true">
+   <div class="image-with-text
+                 featured_collections
+                 clearfix across-1 image-align--{{ section.settings.frontpage_image_position }}">
+       <section class="featured-link--section featured-link--image section-{{ forloop.index }}">
+         <div class="featured-link--half featured-link--image image-crop--{{ section.settings.image_crop }}">
+           <div class="featured-link--wrap">
+             <a {% if section.settings.link != blank %}href="{{ section.settings.link }}"{% endif %} title="{{ section.settings.title }}">
+               {% if section.settings.banner_image %}
+               {% include 'image-element', image: section.settings.banner_image, alt: section.settings.banner_image.alt %}
+               {% else %}
+               {% capture i %}{% cycle "1", "2", "3", "4", "5", "6" %}{% endcapture %}
+               {{ 'collection-' | append: i | placeholder_svg_tag: 'placeholder-svg placeholder-svg--promotions' }}
+               {% endif %}
+             </a>
+           </div>
+         </div>
+         <div class="featured-link--half">
+           <div class="info text-align--{{section.settings.frontpage_text_align}}">
+             <a {% if section.settings.link != blank %}href="{{ section.settings.link }}"{% endif %} class="collection_title">
+               {{ section.settings.title }}
+             </a>
+             {% if section.settings.text != blank %}
+             <div class="description">{{ section.settings.text }}</div>
+             {% endif %}
+             {% if section.settings.link_text != blank %}
+             <a {% if section.settings.link_url != blank %}href="{{ section.settings.link_url }}"{% endif %} class="action_button">
+               {{ section.settings.link_text }}
+             </a>
+             {% endif %}
+           </div>
+         </div>
+       </section>
+     </div>
+</div>
+        
+        
+
+
+{% if section.settings.align_height %}
+  <style>
+    .list-collections .thumbnail img {
+      max-height: {{ section.settings.collection_height }}px;
+    }
+  </style>
+{% endif %}
+
+{% schema %}
+
+{
+  "name": "Collections",
+  "class": "collection-list-template-section",
+  "settings": [
+    {
+     "type": "header",
+     "content": "Collection Menus"
+    },
+    {
+      "type": "link_list",
+      "id": "collection_linklist",
+      "label": "All Collection menu"
+    },
+    {
+      "type": "text",
+      "id": "products_count",
+      "label": "Products Count",
+      "default": "8 products"
+    },
+  	{
+      "type": "text",
+      "id": "section_page_heading",
+      "label": "Page Title",
+      "default": "Weekender"
+    },
+    {
+      "type": "header",
+      "content": "Banner"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Banner image",
+      "info": "1600 x 1000px recommended"
+    },
+    {
+      "type": "checkbox",
+      "id": "image_darken",
+      "label": "Darken banner image",
+      "default": false
+    },
+  	{
+        "type": "header",
+        "content": "Collection mood image"
+    },      
+    {
+        "type": "image_picker",
+        "id": "mood_image",
+        "label": "Image",
+        "info": "1800 x 1000px recommended"
+    },           
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_collection_image",
+      "label": "Show Product First Image",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "collection_breadcrumb",
+      "label": "Show breadcrumb links",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "display_collection_title",
+      "label": "Show page title"
+    },
+    {
+      "type": "checkbox",
+      "id": "align_height",
+      "label": "Align height of collection images"
+    },
+  	{
+      "type": "text",
+      "id": "section_subtext",
+      "label": "Button Label for Sub-Heading"
+    },
+    {
+      "type": "range",
+      "id": "collection_height",
+      "label": "Collection image height",
+      "min": 150,
+      "max": 400,
+      "step": 10,
+      "default": 200,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "collections_per_row",
+      "label": "Collections per row",
+      "min": 2,
+      "max": 4,
+      "step": 1,
+      "default": 3
+    },
+    {
+      "type": "range",
+      "id": "pagination_limit",
+      "label": "Collections per page",
+      "min": 2,
+      "max": 50,
+      "step": 1,
+      "default": 18
+    },
+    {
+      "type": "header",
+      "content": "Sidebar"
+    },
+    {
+      "type": "paragraph",
+      "content": "Create a sidebar by adding content blocks."
+    },
+    {
+      "type": "checkbox",
+      "id": "toggle",
+      "label": "Toggle sidebar content",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Bottom Image Section"
+    },
+    {
+          "type": "select",
+          "id": "frontpage_text_align",
+          "label": "Text alignment",
+          "options": [
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "right",
+              "label": "Right"
+            }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "frontpage_image_position",
+          "label": "Image position",
+          "options": [
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "right",
+              "label": "Right"
+            }
+          ]
+        },
+        {
+          "type": "image_picker",
+          "id": "banner_image",
+          "label": "Image",
+          "info": "1024 x 1024px recommended"
+        },
+        {
+          "type": "select",
+          "id": "image_crop",
+          "label": "Image cropping",
+          "default": "none",
+          "info": "Only applied when text area is taller than image.",
+          "options": [
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "right",
+              "label": "Right"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "none",
+              "label": "None"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Heading",
+          "default": "Your headline"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text",
+          "default": "<p>Promotion description appears here.</p>"
+        }, 
+  		{
+          "type": "text",
+          "id": "link_text",
+          "label": "Link text"
+        },
+        {
+          "type": "url",
+          "id": "link_url",
+          "label": "Link url"
+        },
+        {
+        "type": "header",
+          "content": "Advanced"
+        },
+        {
+          "type": "paragraph",
+          "content": "[Learn more](https://help.outofthesandbox.com/hc/en-us/articles/360022329373)"
+        },
+        {
+          "type": "text",
+          "id": "css_class",
+          "label": "CSS Class"
+        },
+        {
+          "type": "textarea",
+          "id": "custom_css",
+          "label": "Custom CSS"
+        }
+  ],
+  "blocks": [
+  	{
+      "type": "collection_image_block",
+      "name": "Collection image block",
+  	  "settings":[
+        {
+        "type": "image_picker",
+        "id": "custom_collection_image",
+        "label": "Image",
+        "info": "1024 x 1024px recommended"
+        },  
+        {
+        "type": "text",
+        "id": "collection_handle",
+        "label": "Collection handle (Mandatory)",
+        "info": "Mandatory to add collection handle"
+        }
+ 	 ]
+  	},
+    {
+      "type": "filter_by_collection",
+      "name": "Collection list",
+      "limit": 1
+    },
+    {
+      "type": "menu",
+      "name": "Menu",
+      "settings": [
+        {
+          "type": "link_list",
+          "id": "custom_menu_linklist",
+          "label": "Menu"
+        }
+      ]
+    },
+    {
+      "type": "page",
+      "name": "Page",
+      "settings": [
+        {
+          "type": "page",
+          "id": "content_page",
+          "label": "Page"
+        }
+      ]
+    },
+    {
+      "type": "recently_viewed",
+      "name": "Recently viewed products",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "paragraph",
+          "content": "To test the recently viewed products, view your online store outside of the Editor and visit multiple product pages. [Learn more](https:\/\/help.outofthesandbox.com\/hc\/en-us\/articles\/115008765228)"
+        },
+        {
+          "type": "text",
+          "id": "sidebar_rv_title",
+          "label": "Title",
+          "default": "Recently Viewed"
+        },
+        {
+          "type": "range",
+          "id": "sidebar_rv_per",
+          "label": "Products limit",
+          "min": 1,
+          "max": 4,
+          "step": 1,
+          "default": 3
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "name": "Text",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Heading",
+          "default": "Heading"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text",
+          "default": "<p>Text area can be used for special announcements or general information.</p>"
+        }
+      ]
+    },
+    {
+      "type": "filter_by_type",
+      "name": "Type list",
+      "limit": 1
+    },
+    {
+      "type": "filter_by_vendor",
+      "name": "Vendor list",
+      "limit": 1
+    }
+  ]
+}
+
+{% endschema %}

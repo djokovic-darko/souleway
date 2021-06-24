@@ -1,0 +1,1011 @@
+<div class="custom-page-wrapper">
+  {% for block in section.blocks %}
+
+            <div {{ block.shopify_attributes }} class="page_section_wrapper block__{{ block.type }} block__{{ block.id }}">
+
+            {% if block.type == "image_with_text_overlay" %}
+              
+                <!-- Image with text overlay -->
+            	{% include 'include-image-with-text-overlay', type: 'block' %}
+              
+             {% elsif block.type == "image_with_text" %}
+              <div class="container">
+                <div class="image-with-text
+                  featured_collections
+                  clearfix across-1 image-align--{{ block.settings.frontpage_image_position }}">
+                  <section class="featured-link--section featured-link--image section-{{ forloop.index }}">
+                    <div class="featured-link--half featured-link--image image-crop--{{ block.settings.image_crop }}">
+                      <div class="featured-link--wrap">
+                        <a {% if block.settings.link != blank %}href="{{ block.settings.link }}"{% endif %} title="{{ block.settings.title }}">
+                          {% if block.settings.image %}
+                            {% include 'image-element', image: block.settings.image, alt: block.settings.image.alt %}
+                          {% else %}
+                            {% capture i %}{% cycle "1", "2", "3", "4", "5", "6" %}{% endcapture %}
+                            {{ 'collection-' | append: i | placeholder_svg_tag: 'placeholder-svg placeholder-svg--promotions' }}
+                          {% endif %}
+                        </a>
+                      </div>
+                    </div>
+                    <div class="featured-link--half">
+                      <div class="info text-align--{{block.settings.frontpage_text_align}}">
+                        <a {% if block.settings.link != blank %}href="{{ block.settings.link }}"{% endif %} class="collection_title">
+                          {{ block.settings.title }}
+                        </a>
+                        {% if block.settings.text != blank %}
+                          <div class="description">{{ block.settings.text }}</div>
+                        {% endif %}
+                        {% if block.settings.button_label != blank %}
+                          <a {% if block.settings.link != blank %}href="{{ block.settings.link }}"{% endif %} class="button">
+                            {{ block.settings.button_label }}
+                          </a>
+                        {% endif %}
+                      </div>
+                    </div>
+                  </section>
+                </div>
+              </div>
+              
+              {%elsif block.type == 'content-block' %}
+              
+              {% include 'include-featured-text',  type: 'block' %}
+              
+              {% elsif block.type == "blog_posts" %}
+              <div class="blog_wrapper">
+              <!-- Blog posts -->
+              {% include 'include-featured-blog', type: 'block' %}
+              </div>
+              
+              {% elsif block.type == "featured_video" %}
+              <!-- Featured video -->
+              {% include 'include-video', type: 'block' %}
+              
+              {% elsif block.type == 'two-collection-block' %} 
+              
+              {% assign sectionTitle = block.settings.section_title %}
+              {% assign sectionSubTitle = block.settings.section_subtitle %}
+              
+              {% if sectionTitle != blank or sectionSubTitle != blank %} 
+              <div class="container">
+                  <div class="page-section-title-wrapper section--header--wrapper">
+                  <div class="page_section_header one-half medium-down--one-half small-down--one-half columns no-margin ">
+                      <div class="section_header_block">
+                        <div class="section_title">
+                          <p>{{sectionTitle}}</p>
+                        </div>
+                        <div class="section_subtitle">
+                          <h4>{{sectionSubTitle}}</h4>
+                        </div>
+                      </div>
+                  </div>
+
+                  {% assign collection1 = collections[settingCollection] %}
+                  <div class="view_all_btn one-half medium-down--one-half small-down--one-half columns text-right no-margin">
+                    <a class="action_button" href="{{block.settings.collection1}}">Alle anzeigen</a>
+                  </div>
+                  </div>
+              </div>
+              {%endif%}
+              <div class="container">
+              	<div class="custom-two-collection-block">
+                <div class="one-half columns medium-down--one-whole small-down--one-whole two_collection_blocks_wrapper" {{ block.shopify_attributes }}>
+                  <div class="wrapper_block text-align--{{ block.settings.align_text1 }}">
+
+                    <div class="desktop-only">
+                      {% if block.settings.image1 != blank %}
+                      {% include 'image-element', image: block.settings.image1.src, alt: block.settings.image1.alt %}
+                      {% else %}
+                      <p>
+                        {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+                      </p>
+                      {% endif %}
+                    </div>
+                    <div class="mobile-only">
+                      {% if block.settings.mobile_image1 != blank %}
+                      {% include 'image-element', image: block.settings.mobile_image1.src, alt: block.settings.mobile_image1.alt %}
+                      {% else %}
+                      {% if block.settings.image1 != blank %}
+                      	{% include 'image-element', image: block.settings.image1.src, alt: block.settings.image1.alt %}
+                        {% else %}
+                          <p>
+                            {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+                          </p>
+                        {% endif %}
+                      {% endif %}
+                    </div>
+                    {% endif %}
+                    {% if block.settings.button_label1 != blank and block.settings.button_link1 != blank %}
+                    <div class="collection_link_wrapper">
+                      <a href="{{ block.settings.button_link1 }}" class="action_button">
+                        {{ block.settings.button_label1 | escape }}
+                      </a>
+                      <div class="subheading white-arrow-icon">
+                        <a href="{{ block.settings.button_link1 }}" class="action_button subtext">{{block.settings.section_subtext1 | escape }}
+                          {%comment%} 
+                          <span class="arrow_icon">
+                            {% include 'arrow' %}
+                          </span>
+                          {%endcomment%}
+                        </a>
+                      </div>        
+
+                    </div>         
+
+
+                  </div>
+                </div>
+
+                <div class="one-half columns medium-down--one-whole small-down--one-whole two_collection_blocks_wrapper" {{ block.shopify_attributes }}>
+                  <div class="wrapper_block text-align--{{ block.settings.align_text2 }}">
+
+                    <div class="desktop-only">
+                      {% if block.settings.image2 != blank %}
+                      {% include 'image-element', image: block.settings.image2.src, alt: block.settings.image2.alt %}
+                      {% else %}
+                      <p>
+                        {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+                      </p>
+                      {% endif %}
+                    </div>
+                    <div class="mobile-only">
+                      {% if block.settings.mobile_image2 != blank %}
+                      {% include 'image-element', image: block.settings.mobile_image2.src, alt: block.settings.mobile_image2.alt %}
+                      {% else %}
+                      <p>
+                        {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+                      </p>
+                      {% endif %}
+                    </div>
+                    {% endif %}
+                    {% if block.settings.button_label2 != blank and block.settings.button_link2 != blank %}
+                    <div class="collection_link_wrapper">
+                      <a href="{{ block.settings.button_link2 }}" class="action_button">
+                        {{ block.settings.button_label2 | escape }}
+                      </a>
+                      <div class="subheading white-arrow-icon">
+                        <a href="{{ block.settings.button_link2 }}" class="action_button subtext">{{block.settings.section_subtext2 | escape }}
+                         {%comment%} 
+                          <span class="arrow_icon">
+                            {% include 'arrow' %}
+                          </span>
+                          {%endcomment%}
+                        </a>	
+                      </div>        
+
+                    </div>         
+
+
+                  </div>
+                </div>
+              </div>
+              </div>
+             {%endif%}
+
+            </div>
+  {% endfor%}
+</div>
+
+
+<script>
+  
+/******************************SLICK SLIDER FOR MOBILE****************************\
+\*********************************************************************************/
+  
+  $(document).ready(function(e) {   
+    var windowWidth = $( window ).width();    
+    if(windowWidth < 769) {      
+      $('.custom-two-collection-block').slick({
+        dots: false,
+        arrows:false,
+        prevArrow: '<button class="slide-arrow prev-arrow arrow-left"><span class="icon-left-arrow"></span></button>',
+        nextArrow: '<button class="slide-arrow next-arrow arrow-right"><span class="icon-right-arrow"></span></button>',
+        infinite: false,
+        speed: 500,
+        slidesToShow: 1.3,
+        slidesToScroll: 1,
+        cssEase :'ease',
+        easing:'linear',
+        edgeFriction:0.15,
+        swipe: true,
+        touchMove:true
+
+      });
+
+    }
+       
+  });
+</script>
+
+{% schema %}
+  {
+    "name": "About Us",
+    "class": "about-us-page-template",
+    "max_blocks": 20,
+    "settings": [],
+    "blocks": [
+     {
+      "type": "image_with_text",
+      "name": "Image with text",
+      "settings": [       
+        {
+          "type": "select",
+          "id": "frontpage_text_align",
+          "label": "Text alignment",
+          "options": [
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "right",
+              "label": "Right"
+            }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "frontpage_image_position",
+          "label": "Image position",
+          "options": [
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "right",
+              "label": "Right"
+            }
+          ]
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image",
+          "info": "1024 x 1024px recommended"
+        },
+        {
+          "type": "select",
+          "id": "image_crop",
+          "label": "Image cropping",
+          "default": "none",
+          "info": "Only applied when text area is taller than image.",
+          "options": [
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "right",
+              "label": "Right"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "none",
+              "label": "None"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Heading",
+          "default": "Your headline"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text",
+          "default": "<p>Promotion description appears here.</p>"
+        },
+        {
+        "type": "header",
+          "content": "Advanced"
+        },
+        {
+          "type": "paragraph",
+          "content": "[Learn more](https://help.outofthesandbox.com/hc/en-us/articles/360022329373)"
+        },
+        {
+          "type": "text",
+          "id": "css_class",
+          "label": "CSS Class"
+        },
+        {
+          "type": "textarea",
+          "id": "custom_css",
+          "label": "Custom CSS"
+        }
+      ]
+    },
+    {
+      "type": "image_with_text_overlay",
+      "name": "Image with text overlay",
+      "settings": [
+        {
+          "type": "checkbox",
+          "id": "wide_display",
+          "label": "Wide display",
+          "default": true
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image",
+          "info": "1800 x 1000px recommended"
+        },   
+        {
+          "type": "image_picker",
+          "id": "mobile_image",
+          "label": "Mobile Image",
+          "info": "375 x 600px recommended"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Heading",
+          "default": "Your headline"
+        },
+        {
+          "type": "richtext",
+          "id": "subtitle",
+          "label": "Text",
+          "default": "<p>Customize this section</p>"
+        },
+        {
+          "type": "checkbox",
+          "id": "caption_background_transparency",
+          "label": "Enable background transparency"
+        },
+        {
+          "type": "text",
+          "id": "button1",
+          "label": "First button label"
+        },
+        {
+          "type": "url",
+          "id": "button1_link",
+          "label": "First button link"
+        },
+        {
+          "type": "select",
+          "id": "text_position",
+          "label": "Desktop Text position",
+          "options": [
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "right",
+              "label": "Right"
+            }
+          ]
+        },
+       {
+          "type": "select",
+          "id": "mobile_text_position",
+          "label": "Mobile Text position",
+          "options": [
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "top",
+              "label": "Top"
+            },
+			{
+              "value": "bottom",
+              "label": "Bottom"
+            }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "text_align",
+          "label": "Text alignment",
+          "options": [
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "right",
+              "label": "Right"
+            }
+          ]
+        },
+        {
+          "type": "header",
+          "content": "Mobile"
+        },
+        {
+          "type": "select",
+          "id": "mobile_image_crop",
+          "label": "Image cropping",
+          "options": [
+            {
+              "value": "none",
+              "label": "None"
+            },
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "right",
+              "label": "Right"
+            }
+          ]
+        },
+        {
+          "type": "checkbox",
+          "id": "mobile_text_below_image",
+          "label": "Show text below image",
+          "default": true
+        },
+        {
+          "type": "color",
+          "id": "mobile_text_color",
+          "label": "Text"
+        },
+        {
+        "type": "header",
+          "content": "Advanced"
+        },
+        {
+          "type": "paragraph",
+          "content": "[Learn more](https://help.outofthesandbox.com/hc/en-us/articles/360022329373)"
+        },
+        {
+          "type": "text",
+          "id": "css_class",
+          "label": "CSS Class"
+        }
+      ]
+    },
+    {
+	"type": "content-block",
+    "name": "Content Block",
+    "settings": [ 
+      {
+        "type": "text",
+        "id": "heading",
+        "label": "Content Heading"
+      },
+      {
+        "type": "richtext",
+        "id": "content",
+        "label": "Text",
+        "default": "<p>Use this text to share information about your brand with your customers. Describe a product, share announcements, or welcome customers to your store.</p>"
+      },
+      {
+        "type": "text",
+        "id": "subheading",
+        "label": "Content Subheading"
+      },
+	  {
+        "type": "range",
+        "id": "content_font_size",
+        "label": "Content Font Size",
+        "min": 14,
+        "max": 30,
+        "default": 22,
+        "unit": "px"
+      },
+      {
+        "type": "text",
+        "id": "button_label",
+        "label": "Button label"
+      },
+      {
+        "type": "url",
+        "id": "button_link",
+        "label": "Button link"
+      },
+      {
+        "type": "select",
+        "id": "text_size",
+        "label": "Text size",
+        "options": [
+          {
+            "value": "regular_text",
+            "label": "Regular"
+          },
+          {
+            "value": "featured_text",
+            "label": "Large"
+          }
+        ],
+        "default": "featured_text"
+      },
+      {
+        "type": "select",
+        "id": "text_alignment",
+        "label": "Text alignment",
+        "options": [
+          {
+            "value": "align_left",
+            "label": "Left"
+          },
+          {
+            "value": "center",
+            "label": "Center"
+          }
+        ],
+        "default": "center"
+      },
+	  {
+        "type": "range",
+        "id": "content_margin_top",
+        "label": "Section Margin Top",
+        "min": 0,
+        "max": 100,
+        "default": 50,
+        "unit": "px"
+      },
+ 	  {
+        "type": "range",
+        "id": "content_margin_bottom",
+        "label": "Section Margin Bottom",
+        "min": 0,
+        "max": 100,
+        "default": 50,
+        "unit": "px"
+      },
+      {
+        "type": "header",
+        "content": "Advanced"
+      },
+      {
+        "type": "paragraph",
+        "content": "[Learn more](https://help.outofthesandbox.com/hc/en-us/articles/360022329373)"
+      },
+      {
+        "type": "text",
+        "id": "css_class",
+        "label": "CSS Class"
+      },
+      {
+        "type": "textarea",
+        "id": "custom_css",
+        "label": "Custom CSS"
+      }
+    ]
+    },
+    {
+      "type": "blog_posts",
+      "name": "Blog posts",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Heading",
+          "default": "Blog posts"
+        },
+		{
+          "type": "text",
+          "id": "section_subtitle",
+          "label": "Section Subtitle",
+          "default": "Your daily dose"
+      	},
+        {
+          "type": "blog",
+          "id": "blog_widget_select",
+          "label": "Blog"
+        },
+        {
+          "type": "range",
+          "id": "home_page_articles",
+          "label": "Posts",
+          "min": 2,
+          "max": 4,
+          "step": 1,
+          "default": 3
+        },
+        {
+          "type": "checkbox",
+          "id": "blog_tags",
+          "label": "Show blog post tags"
+        },
+        {
+          "type": "checkbox",
+          "id": "blog_author",
+          "label": "Show author"
+        },
+        {
+          "type": "checkbox",
+          "id": "blog_date",
+          "label": "Show date",
+          "default": true
+        },
+        {
+          "type": "checkbox",
+          "id": "blog_comment_count",
+          "label": "Show comment count",
+          "default": true
+        },
+        {
+          "type": "checkbox",
+          "id": "read_more_link",
+          "label": "Show continue reading link for blog post excerpts",
+          "default": true
+        },
+        {
+        "type": "header",
+          "content": "Advanced"
+        },
+        {
+          "type": "paragraph",
+          "content": "[Learn more](https://help.outofthesandbox.com/hc/en-us/articles/360022329373)"
+        },
+        {
+          "type": "text",
+          "id": "css_class",
+          "label": "CSS Class"
+        },
+        {
+          "type": "textarea",
+          "id": "custom_css",
+          "label": "Custom CSS"
+        }
+      ]
+    },
+	{
+	"type": "featured_video",
+    "name": "Video",
+    "settings": [
+    {
+      "type": "checkbox",
+      "id": "wide_display",
+      "label": "Wide display",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "aspect_ratio",
+      "label": "Aspect ratio",
+      "options": [
+        {
+          "value": "16:9",
+          "label": "16:9"
+        },
+        {
+          "value": "4:3",
+          "label": "4:3"
+        }
+      ],
+      "default": "16:9"
+    },
+    {
+      "type": "checkbox",
+      "id": "autoplay",
+      "label": "Autoplay video",
+      "default": false,
+      "info": "Limited browser support for autoplaying video. [Learn more](https:\/\/help.outofthesandbox.com\/hc\/en-us\/articles\/360000661568-Why-won-t-my-video-autoplay-)"
+    },
+    {
+      "type": "checkbox",
+      "id": "autoloop",
+      "label": "Autoloop video",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "video_dark_overlay",
+      "label": "Darken video"
+    },
+    {
+      "type": "video_url",
+      "id": "video",
+      "label": "Video link",
+      "accept": ["youtube", "vimeo"],
+      "default": "https://www.youtube.com/watch?v=_9VUPq3SxOc"
+    },
+    {
+      "type": "text",
+      "id": "mp4",
+      "label": "HTML5 MP4 File URL"
+    },
+    {
+      "type": "text",
+      "id": "ogv",
+      "label": "HTML5 OGV File URL (optional)"
+    },
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image",
+      "info": "1600 x 900px recommended"
+    },
+    {
+      "type": "checkbox",
+      "id": "display_text_over_video",
+      "label": "Show text when video is playing",
+      "default": false
+    },
+    {
+      "type": "richtext",
+      "id": "pretext",
+      "label": "Preheading"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading"
+    },
+    {
+      "type": "richtext",
+      "id": "subtitle",
+      "label": "Subheading"
+    },
+    {
+      "type": "checkbox",
+      "id": "caption_background",
+      "label": "Display solid text background"
+    },
+    {
+      "type": "checkbox",
+      "id": "caption_background_transparency",
+      "label": "Enable background transparency"
+    },
+    {
+      "type": "text",
+      "id": "button1_label",
+      "label": "First button label"
+    },
+    {
+      "type": "url",
+      "id": "button1_link",
+      "label": "First button link"
+    },
+    {
+      "type": "text",
+      "id": "button2_label",
+      "label": "Second button label"
+    },
+    {
+      "type": "url",
+      "id": "button2_link",
+      "label": "Second button link"
+    },
+    {
+      "type": "select",
+      "id": "text_position",
+      "label": "Text position",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "select",
+      "id": "text_align",
+      "label": "Text alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "header",
+      "content": "Mobile"
+    },
+    {
+      "type": "checkbox",
+      "id": "mobile_text_below_image",
+      "label": "Show text below image",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "mobile_text_color",
+      "label": "Text"
+    },
+    {
+      "type": "header",
+      "content": "Advanced"
+    },
+    {
+      "type": "paragraph",
+      "content": "[Learn more](https://help.outofthesandbox.com/hc/en-us/articles/360022329373)"
+    },
+    {
+      "type": "text",
+      "id": "css_class",
+      "label": "CSS Class"
+    }
+  ]
+  },
+  {
+    "type": "two-collection-block",
+    "name": "Two Image Blocks",
+      "settings": [
+      {
+      "type": "text",
+      "id": "section_title",
+      "label": "Section Title",
+	  "default": "Discover"
+      },
+	  {
+      "type": "text",
+      "id": "section_subtitle",
+      "label": "Section Subtitle",
+      "default": "Bestseller"
+      },
+     {
+      "type": "url",
+      "id": "collection1",
+      "label": "View All Link"
+      },
+       {
+        "type": "range",
+        "id": "content_margin_top",
+        "label": "Section Margin Top",
+        "min": 0,
+        "max": 100,
+        "default": 50,
+        "unit": "px"
+       },
+      {
+        "type": "range",
+        "id": "content_margin_bottom",
+        "label": "Section Margin Bottom",
+        "min": 0,
+        "max": 100,
+        "default": 50,
+        "unit": "px"
+      },
+      {
+      "type": "header",
+      "content": "First Image Block"
+      },
+      {
+      "type": "image_picker",
+      "id": "image1",
+      "label": "Desktop Image1"
+      },
+      {
+        "type": "image_picker",
+        "id": "mobile_image1",
+        "label": "Mobile Image1"
+      },
+      {
+        "type": "text",
+        "id": "button_label1",
+        "label": "Button label1"
+      },
+      {
+        "type": "text",
+        "id": "section_subtext1",
+        "label": "Section Subtext1"
+      },
+      {
+        "type": "url",
+        "id": "button_link1",
+        "label": "Button link1"
+      },
+      {
+        "type": "select",
+        "id": "align_text1",
+        "label": "Text alignment1",
+        "default": "left",
+        "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ]
+     },
+     {
+      "type": "header",
+      "content": "Second Image Block"
+      },
+	 {
+      "type": "image_picker",
+      "id": "image2",
+      "label": "Desktop Image2"
+      },
+      {
+        "type": "image_picker",
+        "id": "mobile_image2",
+        "label": "Mobile Image2"
+      },
+      {
+        "type": "text",
+        "id": "button_label2",
+        "label": "Button label2"
+      },
+      {
+        "type": "text",
+        "id": "section_subtext2",
+        "label": "Section Subtext2"
+      },
+      {
+        "type": "url",
+        "id": "button_link2",
+        "label": "Button link2"
+      },
+      {
+        "type": "select",
+        "id": "align_text2",
+        "label": "Text alignment2",
+        "default": "left",
+        "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ]
+     }
+	]
+   }
+  ]
+ }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

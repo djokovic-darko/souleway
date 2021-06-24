@@ -1,0 +1,404 @@
+<div class="custom-page-wrapper">
+  {% for block in section.blocks %}
+
+            <div {{ block.shopify_attributes }} class="page_section_wrapper block__{{ block.type }} block__{{ block.id }}                                                       
+             {%if block.type == 'featured-collection' %} eatured-collection-section {%endif%}">
+
+            {% if block.type == "image_with_text_overlay" %}
+              
+                <!-- Image with text overlay -->
+            	{% include 'include-image-with-text-overlay', type: 'block' %}
+              
+             {% elsif block.type == "image_with_text" %}
+                <div class="image-with-text
+                  featured_collections
+                  clearfix across-1 image-align--{{ block.settings.frontpage_image_position }}">
+                  <section class="featured-link--section featured-link--image section-{{ forloop.index }}">
+                    <div class="featured-link--half featured-link--image {% if block.settings.layout == false %}featured-link--margin{% endif %} image-crop--{{ block.settings.image_crop }}">
+                      <div class="featured-link--wrap">
+                        <a {% if block.settings.link != blank %}href="{{ block.settings.link }}"{% endif %} title="{{ block.settings.title }}">
+                          {% if block.settings.image %}
+                            {% include 'image-element', image: block.settings.image, alt: block.settings.image.alt %}
+                          {% else %}
+                            {% capture i %}{% cycle "1", "2", "3", "4", "5", "6" %}{% endcapture %}
+                            {{ 'collection-' | append: i | placeholder_svg_tag: 'placeholder-svg placeholder-svg--promotions' }}
+                          {% endif %}
+                        </a>
+                      </div>
+                    </div>
+                    <div class="featured-link--half">
+                      <div class="info text-align--{{block.settings.frontpage_text_align}}">
+                        <a {% if block.settings.link != blank %}href="{{ block.settings.link }}"{% endif %} class="collection_title">
+                          {{ block.settings.title }}
+                        </a>
+                        {% if block.settings.text != blank %}
+                          <div class="description">{{ block.settings.text }}</div>
+                        {% endif %}
+                        {% if block.settings.button_label != blank %}
+                          <a {% if block.settings.link != blank %}href="{{ block.settings.link }}"{% endif %} class="button">
+                            {{ block.settings.button_label }}
+                          </a>
+                        {% endif %}
+                      </div>
+                    </div>
+                  </section>
+                </div>
+             {%elsif block.type == 'featured-collection' %}
+              {% assign variantLimit = block.settings.variant_limit %}
+              {% include 'include-best-collection', type: 'block', variantLimit: variantLimit %}
+             {%endif%}
+
+            </div>
+         {% endfor%}
+</div>
+
+{% schema %}
+  {
+    "name": "Langlebiger Begleiter.",
+    "class": "langlebiger-begleiter-page-template",
+    "max_blocks": 20,
+    "settings": [],
+    "blocks": [
+     {
+      "type": "image_with_text",
+      "name": "Image with text",
+      "settings": [
+        {
+          "type": "checkbox",
+          "id": "layout",
+          "label": "Wide display"
+        },
+        {
+          "type": "select",
+          "id": "frontpage_text_align",
+          "label": "Text alignment",
+          "options": [
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "right",
+              "label": "Right"
+            }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "frontpage_image_position",
+          "label": "Image position",
+          "options": [
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "right",
+              "label": "Right"
+            }
+          ]
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image",
+          "info": "1024 x 1024px recommended"
+        },
+        {
+          "type": "select",
+          "id": "image_crop",
+          "label": "Image cropping",
+          "default": "none",
+          "info": "Only applied when text area is taller than image.",
+          "options": [
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "right",
+              "label": "Right"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "none",
+              "label": "None"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Heading",
+          "default": "Your headline"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text",
+          "default": "<p>Promotion description appears here.</p>"
+        },
+        {
+          "type": "header",
+          "content": "Advanced"
+        },
+        {
+          "type": "paragraph",
+          "content": "[Learn more](https://help.outofthesandbox.com/hc/en-us/articles/360022329373)"
+        },
+        {
+          "type": "text",
+          "id": "css_class",
+          "label": "CSS Class"
+        }
+      ]
+    },
+    {
+      "type": "image_with_text_overlay",
+      "name": "Image with text overlay",
+      "settings": [
+        {
+          "type": "checkbox",
+          "id": "wide_display",
+          "label": "Wide display",
+          "default": true
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image",
+          "info": "1800 x 1000px recommended"
+        }, 
+		{
+          "type": "image_picker",
+          "id": "mobile_image",
+          "label": "Mobile Image",
+          "info": "375px x 600px recommended"
+        }, 
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Heading",
+          "default": "Your headline"
+        },
+        {
+          "type": "richtext",
+          "id": "subtitle",
+          "label": "Text",
+          "default": "<p>Customize this section</p>"
+        },
+        {
+          "type": "checkbox",
+          "id": "caption_background_transparency",
+          "label": "Enable background transparency"
+        },
+        {
+          "type": "select",
+          "id": "text_position",
+          "label": "Desktop Text position",
+          "options": [
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "right",
+              "label": "Right"
+            }
+          ]
+        },
+       {
+          "type": "select",
+          "id": "mobile_text_position",
+          "label": "Mobile Text position",
+          "options": [
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "top",
+              "label": "Top"
+            },
+			{
+              "value": "bottom",
+              "label": "Bottom"
+            }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "text_align",
+          "label": "Text alignment",
+          "options": [
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "right",
+              "label": "Right"
+            }
+          ]
+        },
+        {
+          "type": "header",
+          "content": "Mobile"
+        },
+        {
+          "type": "select",
+          "id": "mobile_image_crop",
+          "label": "Image cropping",
+          "options": [
+            {
+              "value": "none",
+              "label": "None"
+            },
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "right",
+              "label": "Right"
+            }
+          ]
+        },
+        {
+          "type": "checkbox",
+          "id": "mobile_text_below_image",
+          "label": "Show text below image",
+          "default": true
+        },
+        {
+          "type": "color",
+          "id": "mobile_text_color",
+          "label": "Text"
+        },
+        {
+          "type": "header",
+          "content": "Advanced"
+        },
+        {
+          "type": "paragraph",
+          "content": "[Learn more](https://help.outofthesandbox.com/hc/en-us/articles/360022329373)"
+        },
+        {
+          "type": "text",
+          "id": "css_class",
+          "label": "CSS Class"
+        }
+      ]
+    },
+    {
+    "type": "featured-collection",
+    "name": "Featured Collection",
+    "settings": [
+      {
+        "type": "text",
+        "id": "section_title",
+        "label": "Section Title",
+        "default": "Discover"
+      },
+      {
+        "type": "text",
+        "id": "section_subtitle",
+        "label": "Section Subtitle",
+        "default": "Bestseller"
+      },
+      {
+        "type": "collection",
+        "id": "collection",
+        "label": "Collection"
+      },
+      {
+        "type": "radio",
+        "id": "collection_style",
+        "label": "Collection layout",
+        "default": "grid",
+        "options": [
+          {
+            "value": "grid",
+            "label": "Grid"
+          }
+        ]
+      },
+      {
+        "type": "header",
+        "content": "Products"
+      },
+      {
+        "type": "range",
+        "id": "products_per",
+        "label": "Products per row",
+        "min": 2,
+        "max": 7,
+        "step": 1,
+        "default": 3
+      },
+      {
+        "type": "range",
+        "id": "products_limit",
+        "label": "Limit products",
+        "min": 2,
+        "max": 50,
+        "step": 1,
+        "default": 9
+      },
+       {
+          "type": "range",
+          "id": "variant_limit",
+          "label": "Limit Variants",
+          "min": 3,
+          "max": 50,
+          "step": 1,
+          "default": 3
+        },
+       {
+        "type": "range",
+        "id": "content_margin_top",
+        "label": "Section Margin Top",
+        "min": 0,
+        "max": 100,
+        "default": 50,
+        "unit": "px"
+       },
+      {
+        "type": "range",
+        "id": "content_margin_bottom",
+        "label": "Section Margin Bottom",
+        "min": 0,
+        "max": 100,
+        "default": 50,
+        "unit": "px"
+      }
+     ] 
+    }
+  ]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

@@ -1,0 +1,166 @@
+{% if type == 'block' %}
+  {% assign id = block.id %}
+  {% assign title = block.settings.title %}
+  {% assign settingCollection = block.settings.collection %}
+  {% assign collection_style = block.settings.collection_style %}
+  {% assign products_per = block.settings.products_per %}
+  {% assign products_limit = block.settings.products_limit %}
+  {% assign sectionTitle = block.settings.section_title %}
+  {% assign sectionSubTitle = block.settings.section_subtitle %}
+  {% assign margin_top = block.settings.content_margin_top | times: 2 %}
+  {% assign margin_bottom = block.settings.content_margin_bottom | times: 2 %}
+  {% assign variantLimit = block.settings.variant_limit %}
+  {% assign productLimit = block.settings.product_limit_to_show %}
+  {%assign mobile_gridValue = block.settings.collection_mobile_grid %}
+{% else %}
+  {% assign id = section.id %}
+  {% assign title = section.settings.title %}
+  {% assign settingCollection = section.settings.collection %}
+  {% assign collection_style = section.settings.collection_style %}
+  {% assign products_per = section.settings.products_per %}
+  {% assign products_limit = section.settings.products_limit %}
+  {% assign sectionTitle = section.settings.section_title %}
+  {% assign sectionSubTitle = section.settings.section_subtitle %}
+  {% assign margin_top = section.settings.content_margin_top | times: 2 %}
+  {% assign margin_bottom = section.settings.content_margin_bottom | times: 2 %}
+  {% assign variantLimit = section.settings.variant_limit %}
+  {% assign productLimit = section.settings.product_limit_to_show %}
+  {%assign mobile_gridValue = section.settings.collection_mobile_grid %}
+{% endif %}
+
+<style>
+   {% if margin_bottom != blank or margin_bottom != blank %}
+    @media (min-width:1025px){
+      .souleway-section-container-{{id}} {
+        margin-top:{{margin_top}}px;
+        margin-bottom:{{margin_bottom}}px;
+      }
+    }
+    @media (max-width:1024px){
+      .souleway-section-container-{{id}} {
+        margin-top:{{margin_top | divided_by: 2}}px;
+        margin-bottom:{{margin_bottom | divided_by: 2}}px;
+      }
+    }
+  {%endif%}
+</style>
+
+{% if settingCollection == blank %}
+  {%- assign section_onboarding = true -%}
+  {% comment %}assign product length to be selected limit for onboarding{% endcomment %}
+  {% assign products_length = products_limit | plus: 0 %}
+{% else %}
+  {%- assign section_onboarding = false -%}
+{% endif %}
+
+<div class="souleway-section-container-{{id}}">
+{% if sectionTitle != blank or sectionSubTitle != blank %}    
+  <div class="container p-t-0"> 
+    <div class="twelve columns offset-by-two medium-down--one-whole equal-columns--outside-trim section--header--wrapper">
+    <div class="page_section_header one-half medium-down--one-half small-down--one-half columns no-margin">
+        <div class="section_header_block">
+          <div class="section_title">
+            <p>{{sectionTitle}}</p>
+          </div>
+          <div class="section_subtitle">
+            <h4>{{sectionSubTitle}}</h4>
+          </div>
+        </div>
+    </div>
+
+    {% assign collection1 = collections[settingCollection] %}
+    <div class="view_all_btn one-half medium-down--one-half small-down--one-half columns text-right no-margin">
+      <a class="action_button" href="{{collection1.url}}">Alle anzeigen</a>
+    </div>
+    </div>
+  </div>
+{%endif%}
+
+{% assign limit = products_limit %}
+
+
+  {% if section_onboarding == false %}
+    {% assign limit = products_limit %}
+    {% assign collection = collections[settingCollection] %}
+    {% assign products = collections[settingCollection].products %}
+    {% assign products_per_row = products_per %}
+
+
+    <div class="container featured-collection__products {%if mobile_gridValue == true %} mobile-grid-view-container {%endif%}">
+      <div class="twelve columns offset-by-two medium-down--one-whole equal-columns--outside-trim">
+        
+        {% if collection.products.size > 0 %}
+         	 {% include 'product-loop-general',mobile_grid: mobile_gridValue,variantLimit: variantLimit, productLimit: productLimit %}
+        {%else%}
+        	 <div class="section clearfix collection-matrix">
+                <p class="quote">{{ 'collections.general.no_matches' | t }}</p>
+             </div>
+        {%endif%}
+        
+      </div>
+    </div>
+  {% else %}
+    {% assign products_per_row = products_per %}
+    <div class="container equal-columns--outside-trim">
+      <div class="sixteen columns">
+        {% capture new_row %}
+            <br class="clear product_clear" />
+        {% endcapture %}
+
+        <div class="product-list collection-matrix clearfix">
+          {% for i in (1..limit) %}
+            {% comment %}{% assign collection_group = products | map: 'id' %}{% endcomment %}
+            {% assign collection_group_thumb = collection_group | append : 'thumb' %}
+            {% assign collection_group_mobile = collection_group | append : 'mobile' %}
+              <div class="
+              {% if products_per_row == 2 %}
+                eight columns {% cycle collection_group_thumb: 'alpha', 'omega' %}
+              {% elsif products_per_row == 3 %}
+                one-third column {% cycle collection_group_thumb: 'alpha', '', 'omega' %}
+              {% elsif products_per_row == 4 %}
+                four columns {% cycle collection_group_thumb: 'alpha', '', '', 'omega' %}
+              {% elsif products_per_row == 5 %}
+                one-fifth column {% cycle collection_group_thumb: 'alpha', '', '', '', 'omega' %}
+              {% elsif products_per_row == 6 %}
+                one-sixth column {% cycle collection_group_thumb: 'alpha', '', '', '', '', 'omega' %}
+              {% else %}
+                one-seventh column {% cycle collection_group_thumb: 'alpha', '', '', '', '', '', 'omega' %}
+              {% endif %} thumbnail {% cycle collection_group_mobile: 'even', 'odd' %}
+              {% if settings.mobile_products_per_row == '1' %}
+                medium-down--one-half
+                small-down--one-whole
+              {% else %}
+                medium-down--one-half
+                small-down--one-half
+              {% endif %}">
+
+              <div class="product-wrap">
+                <div class="relative product_image swap-{{ settings.collection_secondary_image }}">
+                  <a href="#">
+                    {% capture num %}{% cycle "1", "2", "3", "4", "5", "6" %}{% endcapture %}
+                    {{ 'product-' | append: num | placeholder_svg_tag: 'placeholder-svg placeholder-svg--product' }}
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            {% if products_per_row == 2 %}
+              {% cycle collection_group: '', new_row %}
+            {% elsif products_per_row == 3 %}
+              {% cycle collection_group: '', '', new_row %}
+            {% elsif products_per_row == 4 %}
+              {% cycle collection_group: '', '', '', new_row %}
+            {% elsif products_per_row == 5 %}
+              {% cycle collection_group: '', '', '', '', new_row %}
+            {% elsif products_per_row == 6 %}
+              {% cycle collection_group: '', '', '', '', '', new_row %}
+            {% elsif products_per_row == 7 %}
+              {% cycle collection_group: '', '', '', '', '', '', new_row %}
+            {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  {% endif %}
+
+</div>

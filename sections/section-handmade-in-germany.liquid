@@ -1,0 +1,636 @@
+<div class="custom-page-wrapper">
+  {% for block in section.blocks %}
+
+            <div {{ block.shopify_attributes }} class="page_section_wrapper block__{{ block.type }} block__{{ block.id }}">
+
+            {% if block.type == "image_with_text_overlay" %}
+              
+                <!-- Image with text overlay -->
+            	{% include 'include-image-with-text-overlay', type: 'block' %}
+              
+             {% elsif block.type == "image_with_text" %}
+              
+              {% assign two_wide_display = block.settings.two_wide_display %}
+              
+              <div class="container full-width--{{ two_wide_display }}">
+                <div class="image-with-text
+                  featured_collections
+                  clearfix across-1 image-align--{{ block.settings.frontpage_image_position }}">
+                  <section class="featured-link--section featured-link--image section-{{ forloop.index }}">
+                    <div class="featured-link--half featured-link--image image-crop--{{ block.settings.image_crop }}">
+                      <div class="featured-link--wrap">
+                        <a {% if block.settings.link != blank %}href="{{ block.settings.link }}"{% endif %} title="{{ block.settings.title }}">
+                          {% if block.settings.image %}
+                            {% include 'image-element', image: block.settings.image, alt: block.settings.image.alt %}
+                          {% else %}
+                            {% capture i %}{% cycle "1", "2", "3", "4", "5", "6" %}{% endcapture %}
+                            {{ 'collection-' | append: i | placeholder_svg_tag: 'placeholder-svg placeholder-svg--promotions' }}
+                          {% endif %}
+                        </a>
+                      </div>
+                    </div>
+                    <div class="featured-link--half">
+                      <div class="info text-align--{{block.settings.frontpage_text_align}}">
+                        <a {% if block.settings.link != blank %}href="{{ block.settings.link }}"{% endif %} class="collection_title">
+                          {{ block.settings.title }}
+                        </a>
+                        {% if block.settings.text != blank %}
+                          <div class="description">{{ block.settings.text }}</div>
+                        {% endif %}
+                        {% if block.settings.button_label != blank %}
+                          <a {% if block.settings.link != blank %}href="{{ block.settings.link }}"{% endif %} class="button">
+                            {{ block.settings.button_label }}
+                          </a>
+                        {% endif %}
+                      </div>
+                    </div>
+                  </section>
+                </div>
+              </div>
+              
+              {%elsif block.type == 'content-block' %}
+              
+              {% include 'include-featured-text',  type: 'block' %}
+             
+              {% elsif block.type == "three_image_blocks" %}
+              
+              {% assign three_wide_display = block.settings.three_wide_display %}
+             
+              {% if three_wide_display == false %}
+                <div class="container wide_display_flase_three_block">
+                  <div class="sixteen columns">
+                {% endif %}
+    
+                    <div class="inner-wrapper">
+                       <div class="one-half columns medium-down--one-whole  small-down--one-whole three_collection_blocks_wrapper first_block text-column">
+                            <div class="wrapper_block">
+                               {% if block.settings.image1 != blank %}
+                                  {% include 'image-element', image: block.settings.image1.src, alt: block.settings.image1.alt %}
+                                {% else %}
+                                  <p>
+                                    {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+                                  </p>
+                                {% endif %}
+                              {% if block.settings.title1 != blank and block.settings.link1 != blank %}
+                               <div class="collection_link_wrapper">
+                                  <a href="{{ block.settings.link1 }}" class="action_button">
+                                    {{ block.settings.title1 | escape }}
+                                  </a>
+                                 {% if block.settings.subheading1 != blank  %}
+                                   <div class="subheading">
+                                     <a href="" class="action_button">{{ block.settings.subheading1 | escape }}</a>
+                                   </div>
+                                 {%endif%}
+
+                               </div>         
+                              {% endif %}
+
+                            </div>
+                         </div>
+
+                        <div class="one-half columns medium-down--one-whole  small-down--one-whole">
+
+                          <div class="one-whole columns medium-down--one-whole  small-down--one-whole three_collection_blocks_wrapper second_block text-column">
+                            <div class="wrapper_block">
+                              {% if block.settings.image2 != blank %}
+                              {% include 'image-element', image: block.settings.image2.src, alt: block.settings.image2.alt %}
+                              {% else %}
+                              <p>
+                                {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+                              </p>
+                              {% endif %}
+                              {% if block.settings.title2 != blank and block.settings.link2 != blank %}
+                              <div class="collection_link_wrapper">
+                                <a href="{{ block.settings.link2 }}" class="action_button">
+                                  {{ block.settings.title2 | escape }}
+                                </a>
+                                {% if block.settings.subheading2 != blank  %}
+                                  <div class="subheading">
+                                    <a href="" class="action_button">{{ block.settings.subheading2 | escape }}</a>
+                                  </div>
+                                {%endif%}
+
+                              </div>         
+                              {% endif %}
+
+                            </div>
+                           </div>
+
+                           <div class="one-whole columns medium-down--one-whole  small-down--one-whole  three_collection_blocks_wrapper third_block text-column">
+                              <div class="wrapper_block">
+                                 {% if block.settings.image3 != blank %}
+                                    {% include 'image-element', image: block.settings.image3.src, alt: block.settings.image3.alt %}
+                                  {% else %}
+                                    <p>
+                                      {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+                                    </p>
+                                  {% endif %}
+                                {% if block.settings.title3 != blank and block.settings.link3 != blank %}
+                                 <div class="collection_link_wrapper">
+                                    <a href="{{ section.settings.link3 }}" class="action_button">
+                                      {{ block.settings.title3 | escape }}
+                                    </a>
+
+                                   {% if block.settings.subheading3 != blank  %}
+                                     <div class="subheading">
+                                       <a href="" class="action_button">{{ block.settings.subheading3 | escape }}</a>
+                                     </div>
+                                   {%endif%}
+
+                                 </div>         
+                                {% endif %}
+
+                              </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    
+             {% if three_wide_display == false %}
+                </div>
+              </div>
+              {%endif%}
+
+            
+              {%elsif block.type == 'image_side_by_side' %}
+              
+               {% assign imageSideBySideDisplay = block.settings.image_side_by_side_wide_display %}
+              
+                  <div class="container full-width--{{ imageSideBySideDisplay }}">
+                    
+                    {% if imageSideBySideDisplay == true %} 
+                     <div class="sixteen columns">
+			        {%else%}                
+                     <div class="twelve columns offset-by-two medium-down--one-whole equal-columns--outside-trim">
+                    {%endif%}
+                      
+                       <div class="one-half columns medium-down--one-half  small-down--one-half">
+                       {% if block.settings.blockImage1 != blank %}
+                       	{% include 'image-element', image: block.settings.blockImage1.src, alt: block.settings.blockImage1.alt %}
+                       {% else %}
+                         <p>
+                           {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+                         </p>
+                       {% endif %}
+                     </div>
+                     <div class="one-half columns medium-down--one-half  small-down--one-half">
+                       {% if block.settings.blockImage2 != blank %}
+                       	{% include 'image-element', image: block.settings.blockImage2.src, alt: block.settings.blockImage2.alt %}
+                       {% else %}
+                         <p>
+                           {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+                         </p>
+                       {% endif %}
+                     </div>
+                     <div style="padding-top:{{block.settings.third_image_Paddingtop}}px" class="one-whole columns medium-down--one-whole  small-down--one-whole">
+                       {% if block.settings.blockImage3 != blank %}
+                       	{% include 'image-element', image: block.settings.blockImage3.src, alt: block.settings.blockImage3.alt %}
+                       {% else %}
+                         <p>
+                           {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+                         </p>
+                       {% endif %}
+                     </div>
+                    </div>
+                  </div>
+              
+              {%endif%}
+              
+
+            </div>
+  {% endfor%}
+</div>
+
+{% schema %}
+  {
+    "name": "Handmade In germany",
+    "class": "handmade-in-germany-page-template",
+    "max_blocks": 20,
+    "settings": [],
+    "blocks": [
+    {
+      "type": "image_with_text_overlay",
+      "name": "Image with text overlay",
+      "settings": [
+        {
+          "type": "checkbox",
+          "id": "wide_display",
+          "label": "Wide display",
+          "default": true
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Desktop Image",
+          "info": "1800 x 1000px recommended"
+        }, 
+  		{
+          "type": "image_picker",
+          "id": "mobile_image",
+          "label": "Mobile Image",
+          "info": "375px x 600px recommended"
+        }, 
+       {
+          "type": "text",
+          "id": "section_preheading",
+          "label": "Section Preheading"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Heading",
+          "default": "Your headline"
+        },
+        {
+          "type": "richtext",
+          "id": "subtitle",
+          "label": "Text",
+          "default": "<p>Customize this section</p>"
+        },
+        {
+          "type": "checkbox",
+          "id": "caption_background_transparency",
+          "label": "Enable background transparency"
+        },
+        {
+          "type": "text",
+          "id": "button1",
+          "label": "First button label"
+        },
+        {
+          "type": "url",
+          "id": "button1_link",
+          "label": "First button link"
+        },
+        {
+          "type": "select",
+          "id": "text_position",
+          "label": "Text position",
+          "options": [
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "right",
+              "label": "Right"
+            }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "text_align",
+          "label": "Text alignment",
+          "options": [
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "right",
+              "label": "Right"
+            }
+          ]
+        },
+        {
+          "type": "header",
+          "content": "Mobile"
+        },
+        {
+          "type": "select",
+          "id": "mobile_image_crop",
+          "label": "Image cropping",
+          "options": [
+            {
+              "value": "none",
+              "label": "None"
+            },
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "right",
+              "label": "Right"
+            }
+          ]
+        },
+        {
+          "type": "checkbox",
+          "id": "mobile_text_below_image",
+          "label": "Show text below image",
+          "default": true
+        },
+        {
+          "type": "color",
+          "id": "mobile_text_color",
+          "label": "Text"
+        },
+        {
+          "type": "header",
+          "content": "Advanced"
+        },
+        {
+          "type": "paragraph",
+          "content": "[Learn more](https://help.outofthesandbox.com/hc/en-us/articles/360022329373)"
+        },
+        {
+          "type": "text",
+          "id": "css_class",
+          "label": "CSS Class"
+        }
+      ]
+    },
+    {
+	"type": "content-block",
+    "name": "Content Block",
+    "settings": [     
+      {
+        "type": "richtext",
+        "id": "content",
+        "label": "Text",
+        "default": "<p>Use this text to share information about your brand with your customers. Describe a product, share announcements, or welcome customers to your store.</p>"
+      },
+	  {
+        "type": "range",
+        "id": "content_font_size",
+        "label": "Content Font Size",
+        "min": 14,
+        "max": 30,
+        "default": 22,
+        "unit": "px"
+      },
+      {
+        "type": "text",
+        "id": "button_label",
+        "label": "Button label"
+      },
+      {
+        "type": "url",
+        "id": "button_link",
+        "label": "Button link"
+      },
+      {
+        "type": "select",
+        "id": "text_size",
+        "label": "Text size",
+        "options": [
+          {
+            "value": "regular_text",
+            "label": "Regular"
+          },
+          {
+            "value": "featured_text",
+            "label": "Large"
+          }
+        ],
+        "default": "featured_text"
+      },
+      {
+        "type": "select",
+        "id": "text_alignment",
+        "label": "Text alignment",
+        "options": [
+          {
+            "value": "align_left",
+            "label": "Left"
+          },
+          {
+            "value": "center",
+            "label": "Center"
+          }
+        ],
+        "default": "center"
+      }
+    ]
+    },
+	{   
+	"type": "three_image_blocks",
+    "name": "Three Collection Blocks",
+    "settings": [
+          {
+            "type": "checkbox",
+            "id": "three_wide_display",
+            "label": "Wide display",
+            "default": true
+          },
+          {
+          "type": "header",
+          "content": "First Block"
+          },  
+          {
+            "type": "image_picker",
+            "id": "image1",
+            "label": "Image"
+          },         
+          {
+            "type": "text",
+            "id": "title1",
+            "label": "Heading1"
+          },
+		  {
+            "type": "text",
+            "id": "subheading1",
+            "label": "Sub Heading"
+          },
+          {
+            "type": "url",
+            "id": "link1",
+            "label": "Button link"
+          },
+	      {
+          "type": "header",
+          "content": "Second Block"
+          },
+		  {
+            "type": "image_picker",
+            "id": "image2",
+            "label": "Image"
+          },          
+          {
+            "type": "text",
+            "id": "title2",
+            "label": "Heading"
+          },
+		  {
+            "type": "text",
+            "id": "subheading2",
+            "label": "Sub Heading"
+          },
+          {
+            "type": "url",
+            "id": "link2",
+            "label": "Button link"
+          },
+		  {
+          "type": "header",
+          "content": "Third Block"
+          },
+		  {
+            "type": "image_picker",
+            "id": "image3",
+            "label": "Image"
+          },         
+          {
+            "type": "text",
+            "id": "title3",
+            "label": "Heading"
+          },
+		  {
+            "type": "text",
+            "id": "subheading3",
+            "label": "Sub Heading"
+          },
+          {
+            "type": "url",
+            "id": "link3",
+            "label": "Button link"
+          }
+    ]
+   },
+	{
+      "type": "image_with_text",
+      "name": "Image with text",
+      "settings": [
+       {
+          "type": "checkbox",
+          "id": "two_wide_display",
+          "label": "Wide display",
+          "default": true
+        },
+        {
+          "type": "select",
+          "id": "frontpage_text_align",
+          "label": "Text alignment",
+          "options": [
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "right",
+              "label": "Right"
+            }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "frontpage_image_position",
+          "label": "Image position",
+          "options": [
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "right",
+              "label": "Right"
+            }
+          ]
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image",
+          "info": "1024 x 1024px recommended"
+        },
+        {
+          "type": "select",
+          "id": "image_crop",
+          "label": "Image cropping",
+          "default": "none",
+          "info": "Only applied when text area is taller than image.",
+          "options": [
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "right",
+              "label": "Right"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "none",
+              "label": "None"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Heading",
+          "default": "Your headline"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text",
+          "default": "<p>Promotion description appears here.</p>"
+        }
+      ]
+    },
+ 	{
+      "type": "image_side_by_side",
+      "name": "Image Gallery",
+      "settings": [
+ 		{
+          "type": "checkbox",
+          "id": "image_side_by_side_wide_display",
+          "label": "Wide display",
+          "default": false
+        },
+        {
+          "type": "image_picker",
+          "id": "blockImage1",
+          "label": "Image"
+        },
+ 		{
+          "type": "image_picker",
+          "id": "blockImage2",
+          "label": "Image"
+        },		
+		{
+          "type": "image_picker",
+          "id": "blockImage3",
+          "label": "Image"
+        },
+		{
+          "type": "range",
+          "id": "third_image_Paddingtop",
+          "label": "Padding Top",
+          "min": 20,
+          "max": 50,
+          "step": 1,
+          "default": 20
+        }
+      ]
+    }
+  ]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

@@ -1,0 +1,186 @@
+{% assign sectionTitle = section.settings.section_title %}
+{% assign sectionSubTitle = section.settings.section_subtitle %}
+
+<div class="container">
+  <div class="twelve columns offset-by-two medium-down--one-whole equal-columns--outside-trim">  	                  	  
+  {% if sectionTitle != blank or sectionSubTitle != blank %} 
+        <div class="page-section-title-wrapper section--header--wrapper">
+          <div class="page_section_header one-half medium-down--one-half small-down--one-half columns no-margin ">
+            <div class="section_header_block">
+              <div class="section_title">
+                <p>{{sectionTitle}}</p>
+              </div>
+              <div class="section_subtitle">
+                <h4>{{sectionSubTitle}}</h4>
+              </div>
+            </div>
+          </div>
+
+          {% assign collection1 = collections[settingCollection] %}
+          <div class="view_all_btn one-half medium-down--one-half small-down--one-half columns text-right no-margin">
+            <a class="action_button" href="{{section.settings.collection1}}">Alle anzeigen</a>
+          </div>
+        </div>
+    {%endif%}
+    
+    <div class="page_two_collection_blocks_wrapper">
+      {% for block in section.blocks %}
+        <div class="one-half columns medium-down--one-whole small-down--one-whole two_collection_blocks_wrapper text-column" {{ block.shopify_attributes }}>
+          <div class="wrapper_block text-align--{{ block.settings.align_text }}">
+            {% if block.settings.enable_image %}
+              {% if block.settings.image != blank %}
+                {% include 'image-element', image: block.settings.image.src, alt: block.settings.image.alt %}
+              {% else %}
+                <p>
+                  {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+                </p>
+              {% endif %}
+            {% endif %}
+            {% if block.settings.button_label != blank and block.settings.button_link != blank %}
+             <div class="collection_link_wrapper">
+                <p class="title-block">
+                {{ block.settings.button_label | escape }}
+                </p>
+                <div class="subheading white-arrow-icon">
+                  <a href="{{ block.settings.button_link }}" class="action_button subtext">{{block.settings.section_subtext | escape }}
+                    {%comment%} 
+                    <span class="arrow_icon">
+                      {% include 'arrow' %}
+                    </span>
+                    {%endcomment%}
+                  </a>
+               </div> 
+             </div>         
+            {% endif %}
+
+          </div>
+        </div>
+      {% endfor %}
+  </div>
+  </div>
+</div>
+
+<script>
+  
+/******************************SLICK SLIDER FOR MOBILE****************************\
+\*********************************************************************************/
+  
+  $(document).ready(function(e) {   
+    var windowWidth = $( window ).width();    
+    if(windowWidth < 769) {      
+      $('.page_two_collection_blocks_wrapper').slick({
+        dots: false,
+        arrows:false,
+        prevArrow: '<button class="slide-arrow prev-arrow arrow-left"><span class="icon-left-arrow"></span></button>',
+        nextArrow: '<button class="slide-arrow next-arrow arrow-right"><span class="icon-right-arrow"></span></button>',
+        infinite: false,
+        speed: 500,
+        slidesToShow: 1.3,
+        slidesToScroll: 1,
+        cssEase :'ease',
+        easing:'linear',
+        edgeFriction:0.15,
+        swipe: true,
+        touchMove:true
+
+      });
+
+    }
+       
+  });
+</script>
+
+
+
+{% schema %}
+  {
+    "name": "Home Blog Section",
+    "class": "home-blog-section",
+    "max_blocks": 2,
+    "settings": [
+  	  {
+        "type": "text",
+        "id": "section_title",
+        "label": "Section Title"
+      },
+	  {
+        "type": "text",
+        "id": "section_subtitle",
+        "label": "Section Subtitle"
+      },
+     {
+        "type": "url",
+        "id": "collection1",
+        "label": "View All Link"
+      }
+	],
+    "blocks": [
+	  {
+        "type": "collection_block",
+        "name": "Column",
+        "limit": 5,
+        "settings": [
+          {
+            "type": "checkbox",
+            "id": "enable_image",
+            "label": "Show image",
+            "default": true
+          },
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image"
+          },
+          {
+            "type": "text",
+            "id": "button_label",
+            "label": "Block Title"
+          },
+          {
+            "type": "text",
+            "id": "section_subtext",
+            "label": "Button Label"
+          },
+          {
+            "type": "url",
+            "id": "button_link",
+            "label": "Button link"
+          },
+          {
+            "type": "select",
+            "id": "align_text",
+            "label": "Text alignment",
+            "default": "left",
+            "options": [
+              {
+                "value": "left",
+                "label": "Left"
+              },
+              {
+                "value": "center",
+                "label": "Center"
+              },
+              {
+                "value": "right",
+                "label": "Right"
+              }
+            ]
+          }
+        ]
+     }
+   ],
+    "presets": [
+      {
+        "name": "Home Blog Section",
+        "category": "Blog"
+      }
+    ]
+  }
+{% endschema %}
+
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

@@ -1,0 +1,35 @@
+
+      
+      
+      
+      
+      
+      
+      {% comment %}
+  The contents of the search.liquid template can be found in /sections/search-template.liquid
+{% endcomment %}
+
+{% section 'search-template' %}
+
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      {% comment %}START ADCELL APP | DONT REMOVE THIS!{% endcomment %}
+      {% assign search_products = search.results | where: "object_type", "product" %}
+      {% for product in search_products %}
+        {% assign sku-list = sku-list | append: product.variants.first.sku | append: ';' %}
+      {% endfor %}
+      {% assign search_product_ids_string = sku-list %}
+
+      <script type="text/javascript" src="//www.adcell.de/js/inlineretarget.js?method=search&pid=undefined&search={{search.terms}}&productIds={{search_product_ids_string}}&productSeparator=;" async="async"></script>
+    {% comment %}DONT REMOVE THIS | END ADCELL APP{% endcomment %}
+    

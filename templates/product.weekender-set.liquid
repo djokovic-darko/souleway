@@ -1,0 +1,15 @@
+{% comment %}
+  The contents of the product.liquid template can be found in /sections/product-template.liquid
+{% endcomment %}
+
+{% section 'utm-parameter-section' %}
+{% section 'product-weekender-set' %}
+{% section 'product-recommendations' %}
+
+{% include 'product__structured-data' %}
+
+      
+{% comment %}START ADCELL APP | DONT REMOVE THIS!{% endcomment %}
+<script type="text/javascript" src="//www.adcell.de/js/inlineretarget.js?method=product&pid=undefined&productId={{product.variants.first.sku}}&productName={{product.title}}&categoryId={{product.collections[0].id}}&productSeparator=;" async="async"></script>
+{% comment %}DONT REMOVE THIS | END ADCELL APP{% endcomment %}
+    

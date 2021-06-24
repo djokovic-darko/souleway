@@ -1,0 +1,205 @@
+{% if type == 'block' %}
+  {% assign id = block.id %}
+  {% assign wide_display = block.settings.wide_display %}
+  {% assign image = block.settings.image %}
+  {% assign mobileImage = block.settings.mobile_image %}
+  {% assign pretext = block.settings.pretext %}
+  {% assign title = block.settings.title %}
+  {% assign subtitle = block.settings.subtitle %}
+  {% assign caption_background = block.settings.caption_background %}
+  {% assign caption_background_transparency = block.settings.caption_background_transparency %}
+  {% assign text_position = block.settings.text_position %}
+  {% assign mobile_text_position = block.settings.mobile_text_position %}
+  {% assign text_align = block.settings.text_align %}
+  {% assign mobile_text_below_image = block.settings.mobile_text_below_image %}
+  {% assign mobile_image_crop = block.settings.mobile_image_crop %}
+  {% assign button1 = block.settings.button1 %}
+  {% assign button1_link = block.settings.button1_link %}
+  {% assign button2 = block.settings.button2 %}
+  {% assign button2_link = block.settings.button2_link %}
+  {% assign mobile_text_color = block.settings.mobile_text_color %}
+  {% assign margin_top = block.settings.content_margin_top | times: 2 %}
+  {% assign margin_bottom = block.settings.content_margin_bottom | times: 2 %}
+  {% assign css_class = block.settings.css_class %}
+  {% assign custom_css = block.settings.custom_css %}
+  {% assign section_preheading = block.settings.section_preheading %}
+
+{% else %}
+  {% assign id = section.id %}
+  {% assign wide_display = section.settings.wide_display %}
+  {% assign image = section.settings.image %}
+  {% assign mobileImage = section.settings.mobile_image %}
+  {% assign pretext = section.settings.pretext %}
+  {% assign title = section.settings.title %}
+  {% assign subtitle = section.settings.subtitle %}
+  {% assign caption_background = section.settings.caption_background %}
+  {% assign caption_background_transparency = section.settings.caption_background_transparency %}
+  {% assign text_position = section.settings.text_position %}
+  {% assign mobile_text_position = section.settings.mobile_text_position %}
+  {% assign text_align = section.settings.text_align %}
+  {% assign mobile_text_below_image = section.settings.mobile_text_below_image %}
+  {% assign mobile_image_crop = section.settings.mobile_image_crop %}
+  {% assign button1 = section.settings.button1 %}
+  {% assign button1_link = section.settings.button1_link %}
+  {% assign button2 = section.settings.button2 %}
+  {% assign button2_link = section.settings.button2_link %}
+  {% assign mobile_text_color = section.settings.mobile_text_color %}
+  {% assign margin_top = section.settings.content_margin_top | times: 2 %}
+  {% assign margin_bottom = section.settings.content_margin_bottom | times: 2 %}
+  {% assign css_class = section.settings.css_class %}
+  {% assign custom_css = section.settings.custom_css %}
+  {% assign section_preheading = section.settings.section_preheading %}
+{% endif %}
+
+{% assign mobile_crop = 'mobile-banner--crop-' | append: mobile_image_crop %}
+
+{% comment %}Is the color set to transparent?{% endcomment %}
+{% assign mobile_text_alpha = mobile_text_color | color_extract: 'alpha' %}
+
+{% comment %}Section specific CSS{% endcomment %}
+{% style %}
+  @media only screen and (max-width: 480px) {
+    #shopify-section-{{ id }} .pretext,
+    #shopify-section-{{ id }} .headline,
+    #shopify-section-{{ id }} .subtitle,
+    .block__{{ id }} .pretext,
+    .block__{{ id }} .headline,
+    .block__{{ id }} .subtitle {
+      color: {% if mobile_text_alpha != 0 %}{{ mobile_text_color}}{% endif %};
+    }
+  }
+
+
+
+  {% if margin_top != blank or margin_bottom != blank %}
+    .souleway-section-container-{{id}} {
+      margin-top:{{margin_top}}px;
+      margin-bottom:{{margin_bottom}}px;
+    }
+
+    @media (max-width:1024px){
+      .souleway-section-container-{{id}} {
+        margin-top:{{margin_top | divided_by: 2}}px;
+        margin-bottom:{{margin_bottom | divided_by: 2}}px;
+      }
+    }
+  {%endif%}
+{% endstyle %}
+
+<div class="souleway-section-container-{{id}} {{ css_class }}">
+
+  {% if wide_display == false %}
+  <div class="container">
+    <div class="sixteen columns">
+  {% endif %}
+
+
+  {% if section.settings.section_title != blank or section.settings.section_subtitle != blank %}
+      <div class="container p-t-0">
+        <div class="twelve columns offset-by-two medium-down--one-whole equal-columns--outside-trim">
+          <div class="page_section_header container">
+            <div class="section_header_block">
+              <div class="section_title">
+                <p>{{section.settings.section_title }}</p>
+              </div>
+              <div class="section_subtitle">
+                <h4>{{section.settings.section_subtitle}}</h4>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+  {%endif%}
+
+  <section id="banner-{{id}}" class="banner full-width--{{ wide_display }}">
+    
+    <div class="desktop-only">
+      <a {% if button1_link != blank %}href="{{ button1_link }}"{% endif %}>
+        {% if image != nil %}
+          {% include 'image-element', image: image, alt: image.alt, stretch_width: true, additional_classes: mobile_crop %}
+        {% else %}
+          {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg placeholder-svg--banner' }}
+        {% endif %}
+      </a>
+    </div>
+    
+   <div class="mobile-only">
+     <a {% if button1_link != blank %}href="{{ button1_link }}"{% endif %}>
+      {% if mobileImage != nil %}
+        {% include 'image-element', image: mobileImage, alt: mobileImage.alt, stretch_width: true, additional_classes: mobile_crop %}
+      {% else %}
+        {% if image != nil %}
+          {% include 'image-element', image: image, alt: image.alt, stretch_width: true, additional_classes: mobile_crop %}
+        {% else %}
+          {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg placeholder-svg--banner' }}
+        {% endif %}
+      {% endif %}
+     </a>
+    </div>
+    
+    
+    {% unless button1_link != blank and button2_link != blank %}
+      {% if button1_link != blank and button1 == blank %}
+        <a href="{{ button1_link }}" class="banner-full-link">
+          {{ button1 }}
+        </a>
+      {% endif %}
+      {% if button2_link != blank and button2 == blank %}
+        <a href="{{ button2_link }}" class="banner-full-link">
+          {{ button2 }}
+        </a>
+      {% endif %}
+    {% endunless %}
+    {% unless pretext == blank and title == blank and subtitle == blank and button1 == blank and button2 == blank %}
+      <div class="position-{{ text_position }} caption mobile-caption-position mb-{{mobile_text_position}} js-caption mobile-text-below--{{ mobile_text_below_image }}">
+        <div class="caption-content caption-background-{{ caption_background }} caption-transparency-{{ caption_background_transparency }} align-{{ text_align }}">
+          {% if pretext != blank %}
+            <div class="pretext">
+              {{ pretext }}
+            </div>
+          {% endif %}
+          
+          {% if section_preheading != blank %}
+            <div class="subtitle">
+              {{section_preheading}}
+            </div>
+          {%endif%}
+          
+          {% if title != blank %}
+            <h1 class="headline">
+              {{ title }}
+            </h1>
+          {% endif %}
+                  
+           {% if subtitle != blank %}
+            <div class="subtitle">
+              {{ subtitle }}
+            </div>
+          {% endif %}          
+         
+          {% if button1 != blank %}
+            <a {% if button1_link != blank %}href="{{ button1_link }}"{% endif %} class="">
+              <span class="action_button first_button">{{ button1 }}</span>
+              {%comment%}
+              <span class="arrow_icon">
+                {% include 'arrow' %}
+              </span>
+              {%endcomment%}
+            </a>
+          {% endif %}
+          {% if button2 != blank %}
+            <a {% if button2_link != blank %}href="{{ button2_link }}"{% endif %} class="action_button second_button">
+              {{ button2 }}
+            </a>
+          {% endif %}
+        </div>
+      </div>
+    {% endunless %}
+  </section>
+
+  {% if wide_display == false %}
+    </div>
+  </div>
+  {% endif %}
+
+</div>

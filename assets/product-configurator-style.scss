@@ -1,0 +1,378 @@
+/* Absolute Center Spinner */
+.loading {
+  position: fixed;
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  background: radial-gradient(rgba(20, 20, 20,.8), rgba(0, 0, 0, .8));
+  background: -webkit-radial-gradient(rgba(20, 20, 20,.8), rgba(0, 0, 0,.8));
+}
+
+.loader circle{
+  fill: #FFF;
+  opacity: 0;
+}
+
+.loader circle:nth-child(1) {
+  animation: loader 2s 0.17s infinite ease-in-out;
+}
+
+.loader circle:nth-child(2) {
+  animation: loader 2s 0.34s infinite ease-in-out;
+}
+
+.loader circle:nth-child(3) {
+  animation: loader 2s 0.51s infinite ease-in-out;
+}
+
+.loader circle:nth-child(4) {
+  animation: loader 2s 0.68s infinite ease-in-out;
+}
+
+.loader circle:nth-child(5) {
+  animation: loader 2s 0.85s infinite ease-in-out;
+}
+
+.loader circle:nth-child(6) {
+  animation: loader 2s 1.02s infinite ease-in-out;
+}
+
+.loader circle:nth-child(7) {
+  animation: loader 2s 1.19s infinite ease-in-out;
+}
+
+.loader circle:nth-child(8) {
+  animation: loader 2s 1.36s infinite ease-in-out;
+}
+
+.loader circle:nth-child(9) {
+  animation: loader 2s 1.53s infinite ease-in-out;
+}
+
+.loader circle:nth-child(10) {
+  animation: loader 2s 1.7s infinite ease-in-out;
+}
+
+.loader circle:nth-child(11) {
+  animation: loader 2s 1.87s infinite ease-in-out;
+}
+
+.loader circle:nth-child(12) {
+  animation: loader 2s 2.04s infinite ease-in-out;
+}
+
+
+/* Animation for loader */
+@-webkit-keyframes loader {
+  0%{
+    opacity: 0;
+  }
+  15%{
+    opacity: 1;
+  }
+  80%{
+    opacity: 0;
+  }
+}
+
+@-moz-keyframes loader {
+  0%{
+    opacity: 0;
+  }
+  15%{
+    opacity: 1;
+  }
+  80%{
+    opacity: 0;
+  }
+}
+
+@-o-keyframes loader {
+  0%{
+    opacity: 0;
+  }
+  15%{
+    opacity: 1;
+  }
+  80%{
+    opacity: 0;
+  }
+}
+
+@keyframes loader {
+  0%{
+    opacity: 0;
+  }
+  15%{
+    opacity: 1;
+  }
+  80%{
+    opacity: 0;
+  }
+}
+
+
+.swatch_options input:checked+.swatch-element{
+  border-color: #fff;
+}
+
+#containerview_creator_preview{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  position: relative;
+}
+
+.product-configurator-template .mini_cart, .product-configurator-template .nav a.mini_cart{
+  z-index: auto;
+}
+
+#containerview_creator_preview div{
+  cursor: pointer;
+  opacity: 0.75;
+}
+
+#containerview_creator_preview div:first-child{
+  opacity: 1;
+}
+
+.clearfix.product_form .action_button:hover{
+  background: #000;
+  color: #fff;
+}
+
+.clearfix.product_form .product-is-unavailable button, .outOfStock{
+  opacity: 0.5;
+}
+
+#containerview_creator{
+  position: relative;
+}
+
+#containerview_creator button{
+  position: absolute;
+  top: calc(50%-22px);
+}
+
+.custom_container_creator button:focus{
+  outline: 0;
+}
+.custom_container_creator button:active{
+  box-shadow: none;
+}
+
+.nine.columns {
+  background: #fafafa;
+}
+
+.arrow-right{
+    position: absolute;
+    right: 0;
+    top: 45%;
+    z-index:1;
+    cursor:pointer;
+    
+   .fa {
+      font-size: 40px;
+      color: $textColor;
+      font-weight: normal;
+   }
+}
+  
+  
+  .arrow-left{
+    position: absolute;
+    left: 0;
+    top: 45%;
+     z-index:1;
+     cursor:pointer;
+     
+    .fa {
+       font-size: 40px;
+       color: $textColor;
+       font-weight: normal;
+   }
+}
+   
+.custom_container_creator{   
+  position:relative; 
+  
+   @media only screen and (max-width: 768px){
+     margin-bottom:0px !important;
+       
+     .slick-dots{
+       position:relative;
+       bottom:0px;
+       li {
+         margin:0px;
+       }
+     }
+   }
+  
+  .slide-arrow{
+    &:focus {
+      outline:none;
+    }
+  }  
+.slick-arrow.slick-disabled{
+    opacity:0.2;
+  }
+}
+
+.main-accordion{
+  border-bottom: 1px solid #D8D8D8;
+  
+   &:first-child {
+     .prod-accordion-title{
+       padding-top:10px;
+     }
+   }
+}
+
+.product-configurator-wrapper .product-description-wrapper .prod-custom-accordion-wrapper .prod-accordion-title {
+  border: none;
+  margin: 0;
+  padding: 10px 0;
+}
+
+.product-configurator-wrapper .product-description-wrapper .prod-custom-accordion-wrapper .main-accordion:first-child .prod-accordion-title {
+  border-top: none;
+}
+
+.subtitle-block{
+  display:block;
+  font-weight: 300;
+}
+
+.swatch-active.swatch-element.color, .swatch-element.color:focus {
+  border-color: #bbb !important;
+}
+
+.swatch-element.color {
+  border-color: #fff !important;
+}
+
+.swatch-element.color label {
+  border: none;
+}
+
+.swatch .outOfStock .crossed-out {
+  display: inline-block;
+}
+
+.swatch .noOutOfStock .crossed-out {
+  display: none !important;
+}
+
+.outOfStock label {
+  position: relative;
+}
+
+#viewGrid {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+#viewGrid div {
+  background: #fafafa;
+  background: radial-gradient(farthest-corner at 0 0, #eaeaea, #fafafa);
+  width: 50%;
+/*   height: 400px; */
+}
+
+@media (max-width: 798px) {
+  #viewGrid div {
+    width: 100%;
+  }
+}
+
+/* for putting the shimmer effect on image load */
+.shine{
+  background: #f6f7f8;
+  background-image: linear-gradient(to right, #f6f7f8 0%, #edeef1 20%, #f6f7f8 40%, #f6f7f8 100%);
+  background-repeat: no-repeat;
+  background-size: 100% 100%; 
+  display: inline-block;
+  position: relative; 
+  
+  -webkit-animation-duration: 1s;
+  -webkit-animation-fill-mode: forwards; 
+  -webkit-animation-iteration-count: infinite;
+  -webkit-animation-name: placeholderShimmer;
+  -webkit-animation-timing-function: linear;
+}
+
+/* 
+.shine:before {
+    position: absolute;
+    content: '';
+    background: rgba(0,0,0, 0.5); 
+    width: 200px;
+    height: 200px;
+    pointer-events: none;
+}
+ */
+
+/* .shine:after {
+    position: absolute;
+    content: '';
+    background: rgba(0,0,0, 0.5);
+    width: 200px;
+    height: 200px;
+    pointer-events: none;
+} */
+
+/* 
+.shine:before {
+    position: absolute;
+    content: '';
+    background: rgba(0,0,0, 0.5); 
+    width: 200px;
+    height: 200px;
+    pointer-events: none;
+}
+ */
+/* box {
+  height: 104px;
+  width: 100px;
+}
+ */
+/* div {
+  display: inline-flex;
+  flex-direction: column; 
+  margin-left: 25px;
+  margin-top: 15px;
+  vertical-align: top; 
+} */
+
+lines {
+  height: 10px;
+  margin-top: 10px;
+  width: 200px; 
+}
+
+photo {
+  display: block!important;
+  width: 325px; 
+  height: 100px; 
+  margin-top: 15px;
+}
+
+@-webkit-keyframes placeholderShimmer {
+  0% {
+    background-position: -468px 0;
+  }
+  
+  100% {
+    background-position: 468px 0; 
+  }
+}
+
+.shine div, #viewGrid {
+  visibility: hidden;
+}

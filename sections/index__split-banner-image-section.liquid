@@ -1,0 +1,185 @@
+{% assign margin_top = section.settings.content_margin_top | times: 2 %}
+{% assign margin_bottom = section.settings.content_margin_bottom | times: 2 %}
+{% assign id = section.id %}
+{% comment %}Section specific CSS{% endcomment %}
+{% style %}
+   {% if margin_top != blank or margin_bottom != blank %}
+    @media (min-width:1025px){
+      .souleway-section-container-{{id}} {
+        margin-top:{{margin_top}}px;
+        margin-bottom:{{margin_bottom}}px;
+      }
+    }
+    @media (max-width:1024px){
+      .souleway-section-container-{{id}} {
+        margin-top:{{margin_top | divided_by: 2}}px;
+        margin-bottom:{{margin_bottom | divided_by: 2}}px;
+      }
+    }
+  {%endif%}
+{% endstyle %}
+
+<div class="souleway-section-container-{{id}}">
+  <section class="soulway-section-wrapper banner  full-width--true ">
+  <div class="container full-width--true">
+    <div class="sixteen columns medium-down--one-whole equal-columns--outside-trim">
+      <div class="two-image-banner-section-wrapper">
+        {% for block in section.blocks %}
+        {% if section.blocks.size == 1 %}
+        {%- assign column_width = 'sixteen columns' -%}
+        {% elsif section.blocks.size == 2 %}
+        {%- assign column_width = 'one-half column medium-down--one-whole small-down--one-whole' -%}
+        {% endif %}
+        
+        {%style%}
+        .two_banner_blocks_wrapper.block-{{block.id}} .content__block .heading-block,
+        .two_banner_blocks_wrapper.block-{{block.id}} .content__block .action_button{
+        	color: {{block.settings.color_text}};
+        }
+        
+        .two_banner_blocks_wrapper.block-{{block.id}} .content__block .action_button{
+          border-color: {{block.settings.color_text}};
+        }
+           
+        {%endstyle%}
+        
+        <div class="{{ column_width }} two_banner_blocks_wrapper text-column block-{{block.id}}" {{ block.shopify_attributes }}>
+          <div class="wrapper_block text-align--{{ block.settings.align_text }}">
+            
+            
+              <a href="{{ block.settings.button_link }}">
+                <div class="desktop-only">
+                  {% if block.settings.image != blank %}
+                    {% include 'image-element', image: block.settings.image.src, alt: block.settings.image.alt %}
+                  {% else %}
+                  <p>
+                    {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+                  </p>
+                  {% endif %}
+                </div>
+                <div class="mobile-only">
+                  {% if block.settings.mobile_image != blank %}
+                   {% include 'image-element', image: block.settings.mobile_image.src, alt: block.settings.mobile_image.alt %}
+                  {% else %}
+                    {% if block.settings.image != blank %}
+                      {% include 'image-element', image: block.settings.image.src, alt: block.settings.image.alt %}
+                    {% else %}
+                      <p>
+                        {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+                      </p>
+                    {% endif %}
+                  {% endif %}
+                </div>
+            </a>
+            <div class="content__block">
+            <h2 class="heading-block">{{block.settings.heading}}</h2>
+            {% if block.settings.button_label != blank and block.settings.button_link != blank %}
+            <div class="collection_link_wrapper">
+              <a href="{{ block.settings.button_link }}" class="action_button">
+                {{ block.settings.button_label | escape }}
+              </a>
+            </div>         
+            {% endif %}
+            </div>
+
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+  </section>
+</div>
+
+{% schema %}
+  {
+    "name": "Two Banner Blocks",
+    "class": "two-image-banner-section",
+    "settings": [
+     {
+      "type": "range",
+      "id": "content_margin_top",
+      "label": "Section Margin Top",
+      "min": 0,
+      "max": 100,
+      "default": 50,
+      "unit": "px"
+     },
+    {
+      "type": "range",
+      "id": "content_margin_bottom",
+      "label": "Section Margin Bottom",
+      "min": 0,
+      "max": 100,
+      "default": 50,
+      "unit": "px"
+    }
+    ],
+    "blocks": [
+      {
+        "type": "image_block",
+        "name": "Banner",
+        "limit": 2,
+        "settings": [
+		  {
+            "type": "text",
+            "id": "heading",
+            "label": "Heading"
+          },
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image"
+          },
+		  {
+            "type": "image_picker",
+            "id": "mobile_image",
+            "label": "Mobile Image"
+          },
+          {
+            "type": "text",
+            "id": "button_label",
+            "label": "Button label"
+          },
+          {
+            "type": "url",
+            "id": "button_link",
+            "label": "Button link"
+          },
+          {
+            "type": "select",
+            "id": "align_text",
+            "label": "Text alignment",
+            "default": "left",
+            "options": [
+              {
+                "value": "left",
+                "label": "Left"
+              },
+              {
+                "value": "center",
+                "label": "Center"
+              },
+              {
+                "value": "right",
+                "label": "Right"
+              }
+            ]
+          },
+		  {
+            "type": "color",
+            "id": "color_text",
+            "label": "Text Color",
+            "default": "#fff"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "Two Banner Blocks",
+        "category": "Banner"
+      }
+    ]
+  }
+{% endschema %}

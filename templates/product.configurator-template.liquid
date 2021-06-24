@@ -1,0 +1,21 @@
+{% comment %}
+  The contents of the product.liquid template can be found in /sections/product-template.liquid
+{% endcomment %}
+
+<!-- Linking custom scss file -->
+{{ 'product-configurator-style.scss' | asset_url | stylesheet_tag }}
+
+{% section 'utm-parameter-section' %}
+{% section 'product-configurator' %}
+{% section 'product-recommendations' %}
+
+{% include 'product__structured-data' %}
+
+<script>
+	var conf_product_id = "{{ product.id }}";
+</script>
+
+<script type="text/javascript" src="https://unpkg.com/konva@6.0.0/konva.min.js"></script>
+
+<!-- Linking "product-page-client.js" for the customization of product -->
+{{ 'product-page-client.js' | asset_url | script_tag }}
